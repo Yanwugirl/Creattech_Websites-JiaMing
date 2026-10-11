@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Take a universal charger apart and follow the hidden costs of charging.">
+  <title>Universal charger</title>
+  <link rel="icon" href="assets/charger.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Universal charger</h1>
+    <p>What keeps working when we stop looking?</p>
+  </header>
+
+  <main>
+    <!-- LEFT: the object is built from the pixel layers in script.js. -->
+    <section class="object-panel" aria-labelledby="object-title">
+      <h2 id="object-title">Look inside</h2>
+      <p class="hint">Hover to look. Click a number to move its part.</p>
+      <div class="object-stage">
+        <div id="object" aria-label="A handmade pixel universal charger">
+          <img id="whole" src="assets/charger.png" alt="An assembled universal charger" width="32" height="32">
+        </div>
+      </div>
+      <div class="part-buttons" aria-label="Choose a part">
+        <button data-part="shell">1 · Shell</button>
+        <button data-part="board">2 · Board</button>
+        <button data-part="plug">3 · Plug</button>
+        <button data-part="contacts">4 · Contacts</button>
+      </div>
+      <button id="assemble" class="small-button">Put it back together</button>
+      <p id="part-status" class="hint" role="status">Everything is in place.</p>
+      <details class="stop-motion">
+        <summary>See the real object come apart</summary>
+        <div id="film" role="img" aria-label="Original stop-motion film of the charger being taken apart"></div>
+        <button id="play-film" class="small-button">Play again</button>
+      </details>
+    </section>
+
+    <!-- RIGHT: a fact card and a small charging experiment. -->
+    <div class="right-panel">
+      <section id="card" aria-labelledby="card-title">
+        <h2 id="card-title">Every part has a history.</h2>
+        <p id="card-fact">Choose a part to find one thing you cannot see from the outside.</p>
+        <img id="card-image" alt="" hidden>
+        <p id="card-source" class="hint" hidden></p>
+        <a id="source-link" target="_blank" rel="noopener noreferrer" hidden>Read the source</a>
+        <p id="card-note" class="note" hidden></p>
+        <button id="ask-button" class="small-button" hidden>Ask the charger</button>
+        <p id="model-output" class="note" role="status"></p>
+      </section>
+
+      <section class="charging-panel" aria-labelledby="charging-title">
+        <h2 id="charging-title">A little more charge</h2>
+        <p class="hint">Charge it. Use it. Decide when to unplug.</p>
+        <div id="charging-stage" data-state="unplugged">
+          <img id="small-charger" src="assets/charger.png" alt="The same universal charger">
+          <span id="connection" aria-hidden="true"></span>
+          <img id="charge-bolt" src="assets/charging-bolt.png" alt="" aria-hidden="true">
+          <div class="display">
+            <img src="assets/charging-display.png" alt="Your handmade pixel charging display">
+            <output id="battery-number" aria-label="Battery charge">20%</output>
+          </div>
+          <div class="charge-track" aria-hidden="true"><img id="battery-dot" src="assets/battery-dot.png" alt=""></div>
+        </div>
+        <progress id="battery-level" max="100" value="20" aria-label="Simulated battery level">20%</progress>
+        <p id="charge-status" role="status">20% · Unplugged</p>
+        <div class="charge-buttons">
+          <button id="charge-button">Plug in</button>
+          <button id="use-button">Use some charge</button>
+          <button id="reset-charge" class="small-button">Reset</button>
+        </div>
+        <p id="charge-thought">The battery is resting. The charger is unplugged.</p>
+        <p class="note">A small simulation: the percentages, timing and idle steps are invented, not measured energy use.</p>
+      </section>
+    </div>
+  </main>
+  <p id="asset-warning" class="warning" role="alert" hidden>An image did not load. You can still use the part buttons and read the facts.</p>
+  <noscript><p class="warning">Enable JavaScript to move the parts and use the charging experiment.</p></noscript>
+</body>
+</html>

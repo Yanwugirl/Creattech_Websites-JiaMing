@@ -1,0 +1,94 @@
+/* The page is deliberately small: one object, one card, one experiment. */
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #151515; color: #eeeeea; font-family: Georgia, serif; }
+header { text-align: center; margin: 28px 16px 24px; }
+h1 { font-size: 30px; font-weight: normal; margin: 0 0 8px; }
+header p { color: #b6b6b0; margin: 0; font-size: 16px; }
+h2 { font-size: 23px; font-weight: normal; margin: 0 0 12px; }
+p { font-size: 16px; line-height: 1.6; margin: 12px 0; }
+main { display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 440px); justify-content: center; gap: 32px; padding: 0 24px 32px; }
+.object-panel { text-align: center; }
+.hint, .note { color: #b6b6b0; font-size: 14px; line-height: 1.6; }
+.hint { margin: 0 0 14px; }
+.note { margin-top: 14px; }
+button { font: 14px Arial, sans-serif; color: #eeeeea; background: #292929; border: 1px solid #62625b; padding: 9px 12px; cursor: pointer; border-radius: 3px; }
+button:hover { background: #373a35; border-color: #9dc8aa; }
+button:disabled { opacity: .45; cursor: default; }
+button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid #a6d0b3; outline-offset: 4px; }
+button[aria-pressed="true"] { border-color: #a6d0b3; color: #b9e9c8; }
+.small-button { padding: 6px 10px; background: transparent; }
+[hidden] { display: none !important; }
+a { color: #a6d0b3; font-size: 14px; text-underline-offset: 3px; }
+
+/* Each layer keeps the original 32 × 32 drawing, enlarged ten times. */
+.object-stage { min-height: 390px; background: #222420; border: 1px solid #363b34; overflow: hidden; }
+#object { position: relative; width: 320px; height: 320px; margin: 25px auto 40px; }
+#whole, .part img { width: 320px; height: 320px; image-rendering: pixelated; pointer-events: none; }
+#whole { position: absolute; inset: 0; }
+.part { position: absolute; inset: 0; pointer-events: none; transition: transform .65s steps(6, end); }
+.part img { opacity: 0; }
+#object.is-open .part img { opacity: 1; }
+#object.is-open #whole { visibility: hidden; }
+.part .hit { position: absolute; width: 36px; height: 36px; padding: 0; pointer-events: auto; border-radius: 0; background: #151515; font: 14px monospace; }
+.part:has(.hit:hover) img { filter: brightness(1.2); }
+.part.static { pointer-events: none; }
+.part.shell { z-index: 8; }
+.part.board { z-index: 5; }
+.part.plug { z-index: 6; }
+.part.contacts { z-index: 7; }
+/* The cover has to move to let us see any of the inner parts. */
+#object.is-open .part.shell { transform: translate(-45px, -10px); }
+#object.is-open .part.shell.apart { transform: translate(-70px, -30px); }
+.part.board.apart { transform: translate(45px, -60px); }
+.part.plug.apart { transform: translate(75px, 0); }
+.part.contacts.apart { transform: translate(60px, 42px); }
+.part-buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 16px 0; }
+#part-status { margin: 10px 0 0; }
+.stop-motion { text-align: left; margin-top: 24px; border-top: 1px solid #45453f; padding-top: 16px; }
+summary { color: #b6b6b0; font-size: 14px; cursor: pointer; }
+#film { width: 144px; height: 192px; margin: 14px 0; background: url('assets/disassembly.webp') 0 0 / 1200% 100% no-repeat; }
+#film.play { animation: film 3s steps(11, end) forwards; }
+@keyframes film { from { background-position: 0 0; } to { background-position: 100% 0; } }
+
+/* The card stays still. JavaScript changes only its contents. */
+#card { background: #252525; padding: 22px; min-height: 235px; border: 1px solid #40403b; }
+#card-image { display: block; width: 110px; height: 86px; object-fit: contain; margin: 12px 0; }
+#card-source { margin-bottom: 4px; }
+#model-output:empty { display: none; }
+#ask-button { margin-top: 12px; }
+.charging-panel { margin-top: 26px; }
+#charging-stage { position: relative; height: 165px; background: #222420; overflow: hidden; border: 1px solid #363b34; }
+#charging-stage img { image-rendering: pixelated; }
+#small-charger { position: absolute; width: 150px; height: 150px; left: 6%; top: 10px; }
+#connection { position: absolute; width: 22%; height: 3px; left: 32%; top: 111px; background: #666760; }
+#charge-bolt { position: absolute; width: 28px; height: 34px; object-fit: contain; left: 44%; top: 80px; opacity: 0; }
+.display { position: absolute; width: 105px; height: 105px; left: 57%; top: 33px; }
+.display img { width: 100%; height: 100%; object-fit: contain; }
+#battery-number { position: absolute; left: 14%; top: 19%; width: 74%; height: 32%; display: grid; place-items: center; color: #151515; font: bold 17px monospace; background: #a5a5a5; }
+.charge-track { position: absolute; right: 16px; top: 27px; height: 104px; border-left: 1px dashed #6f7168; }
+#battery-dot { position: absolute; width: 24px; height: 24px; left: -12px; top: 64px; transition: top .3s; }
+#charging-stage[data-state="charging"] #charge-bolt { opacity: 1; animation: pulse .8s steps(2, end) infinite; }
+#charging-stage[data-state="charging"] #connection { background: #a6d0b3; }
+#charging-stage[data-state="full"] #charge-bolt { opacity: .45; }
+@keyframes pulse { 50% { opacity: .3; transform: translateX(5px); } }
+#battery-level { display: block; width: 100%; height: 9px; margin-top: 14px; accent-color: #a6d0b3; }
+#charge-status { font: 14px monospace; margin: 10px 0 14px; color: #b9e9c8; }
+.charge-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+#charge-thought { min-height: 50px; margin: 14px 0 0; font-size: 16px; }
+.warning { max-width: 920px; padding: 12px 24px; margin: auto; color: #f2c7a0; }
+
+@media (max-width: 740px) {
+  main { grid-template-columns: minmax(0, 440px); gap: 26px; padding: 0 16px 28px; }
+  header { margin-top: 22px; }
+  h1 { font-size: 28px; }
+}
+@media (max-width: 380px) {
+  #object { width: 280px; height: 280px; transform: scale(.875); transform-origin: top left; }
+  .object-stage { min-height: 345px; }
+  .display { left: 55%; width: 94px; height: 94px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  #film.play { background-position: 100% 0; }
+}
