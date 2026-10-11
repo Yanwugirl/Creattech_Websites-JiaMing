@@ -71,17 +71,17 @@ summary { color: #b6b6b0; font-size: 14px; cursor: pointer; }
 #charge-body, #charge-cover { position: absolute; width: 220px; height: 220px; pointer-events: none; }
 #charge-body { left: 86px; top: 0; transform: rotate(90deg); z-index: 1; }
 #charge-item { position: absolute; width: 130px; height: 130px; object-fit: contain; left: 30px; top: 48px; z-index: 2; transition: transform .3s steps(3, end); }
-/* The cover's (16, 6) pixel is its hinge. The final rotateZ only orients
-   the drawing. rotateY opens the clip into depth; the paired rotateX
-   transforms give us a view from above, so its front edge lifts upward. */
-#charge-cover { left: calc(var(--hinge-x) - var(--clip-anchor-x)); top: calc(var(--hinge-y) - var(--clip-anchor-y)); transform-origin: var(--clip-anchor-x) var(--clip-anchor-y); transform: perspective(600px) rotateX(45deg) rotateY(0deg) rotateX(-45deg) rotateZ(90deg); z-index: 3; opacity: .75; transition: transform .3s steps(3, end); }
+/* The cover's (16, 6) pixel is its hinge. rotateZ only orients the drawing.
+   Positive rotateY brings the free edge toward the viewer (+Z).
+   The camera stays face-on: opening does not add a view from above. */
+#charge-cover { left: calc(var(--hinge-x) - var(--clip-anchor-x)); top: calc(var(--hinge-y) - var(--clip-anchor-y)); transform-origin: var(--clip-anchor-x) var(--clip-anchor-y); transform: perspective(600px) rotateY(0deg) rotateZ(90deg); z-index: 3; opacity: .75; transition: transform .45s steps(5, end); }
 .contact-pins { position: absolute; left: 147px; top: 81px; z-index: 4; display: grid; gap: 28px; }
 .contact-pins i { width: 22px; height: 5px; background: #dbce9b; border: 1px solid #8f855f; }
 .indicator-lights { position: absolute; top: calc(var(--hinge-y) - 24.5px); left: calc(var(--hinge-x) + 8px); display: flex; flex-direction: column; gap: 8px; z-index: 5; }
 .indicator-lights span { width: 11px; height: 11px; border: 1px solid #aaaaa3; background: #41423c; }
 #charging-stage[data-state="charging"] .indicator-lights span { background: #ef6562; }
 #charging-stage[data-state="full"] .indicator-lights span { background: #8ee89e; }
-#charging-stage[data-seated="false"] #charge-cover { transform: perspective(600px) rotateX(45deg) rotateY(45deg) rotateX(-45deg) rotateZ(90deg); }
+#charging-stage[data-seated="false"] #charge-cover { transform: perspective(600px) rotateY(65deg) rotateZ(90deg); }
 #charging-stage[data-seated="false"] #charge-item { transform: translateX(-24px); }
 #charging-stage[data-seated="false"] .contact-pins { opacity: .35; }
 #charging-stage[data-item="small"] #charge-item { width: 100px; height: 100px; left: 60px; top: 61px; }
