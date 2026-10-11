@@ -1,7 +1,9 @@
 "use strict";
 
-// 1. Four facts. Keep these short and keep the evidence visible.
+// 1. Seven facts. Keep these short and keep the evidence visible.
 const study = "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002300013";
+const manual = "https://support.hama.com/webresources/article-documents/00081/man/00081380man_cs_de_en_es_fi_fr_it_nl_pl_pt_ru_sv.pdf";
+const ewaste = "https://www.itu.int/en/ITU-D/Environment/Pages/Publications/The-Global-E-waste-Monitor-2024.aspx";
 const facts = {
   shell: {
     title: "The shell begins before the charger.",
@@ -31,9 +33,35 @@ const facts = {
     title: "Taking it apart is not the end.",
     fact: "Only 22.3% of global electronic waste was documented as formally collected and recycled in 2022. Separating a few parts does not mean they will all be recovered.",
     source: "ITU / UNITAR, The Global E-waste Monitor 2024.",
-    url: "https://www.itu.int/en/ITU-D/Environment/Pages/Publications/The-Global-E-waste-Monitor-2024.aspx",
+    url: ewaste,
     image: "assets/contact-photo.webp",
     note: "This is a global e-waste figure, not a charger-specific recycling rate. The future disposal route of this object is unknown."
+  },
+  wires: {
+    title: "A short connection. A longer material story.",
+    fact: "Electronics contain metals that take energy to extract and manufacture. Recovering these materials through proper collection can keep them in circulation.",
+    source: "US EPA, Electronics Donation and Recycling, 2025.",
+    url: "https://www.epa.gov/recycle/electronics-donation-and-recycling",
+    image: "assets/wires-photo.webp",
+    imageAlt: "The wires connected to the disassembled circuit board",
+    note: "The wire metal in this object has not been identified. The source describes electronics generally."
+  },
+  lights: {
+    title: "Full does not mean switched off.",
+    fact: "A light can show that charging has finished while the charger stays connected. Hama lists 0.0582 W of no-load power for one charger's adapter.",
+    source: "Hama Delta Ovum LCD operating instructions, p. 5.",
+    url: manual,
+    image: "assets/indicator-photo.webp",
+    imageAlt: "Three indicator lights on the reference universal charger",
+    note: "A published figure for Hama's adapter, not a reading from this older charger. Its exact LED codes are unverified."
+  },
+  back: {
+    title: "There is no invisible bin.",
+    fact: "The world generated 62 million tonnes of electronic waste in 2022. A casing is one small part of a much larger waste stream.",
+    source: "ITU / UNITAR, The Global E-waste Monitor 2024.",
+    url: ewaste,
+    image: "assets/back-photo.webp",
+    note: "A global total, not this object's footprint. Taking the casing off does not guarantee it will be recycled."
   }
 };
 
@@ -41,11 +69,14 @@ const facts = {
 // All layer images share the same 32 × 32 canvas, so they line up.
 const object = document.getElementById("object");
 const layers = [
-  { image: 0 }, { image: 4 }, { image: 7 }, { image: 6 },
-  { id: "board", image: 2, x: 216, y: 95, number: 2 },
-  { id: "contacts", image: 3, x: 209, y: 244, number: 4 },
-  { id: "plug", image: 1, x: 218, y: 182, number: 3 },
-  { id: "shell", image: 5, x: 55, y: 176, number: 1 }
+  { image: 0 },
+  { id: "back", image: 4, x: 48, y: 256, number: 7 },
+  { id: "lights", image: 7, x: 144, y: 30, number: 6 },
+  { id: "wires", image: 6, x: 82, y: 95, number: 5 },
+  { id: "board", image: 2, x: 225, y: 75, number: 2 },
+  { id: "contacts", image: 3, x: 209, y: 254, number: 4 },
+  { id: "plug", image: 1, x: 230, y: 190, number: 3 },
+  { id: "shell", image: 5, x: 50, y: 180, number: 1 }
 ];
 layers.forEach(layer => {
   const element = document.createElement("div");
@@ -85,7 +116,7 @@ function showFact(id) {
   document.getElementById("card-fact").textContent = currentFact.fact;
   const photo = document.getElementById("card-image");
   photo.src = currentFact.image;
-  photo.alt = "The real " + id + " from the user's disassembled charger";
+  photo.alt = currentFact.imageAlt || "The real " + id + " from the user's disassembled charger";
   photo.hidden = false;
   document.getElementById("card-source").textContent = currentFact.source;
   document.getElementById("card-source").hidden = false;
@@ -141,9 +172,15 @@ document.querySelector(".stop-motion").addEventListener("toggle", event => {
   if (event.target.open) playFilm();
 });
 
-// 5. The charging experiment has just three pieces of changing state.
-// These are playful values, not a scientific model of battery charging.
-let battery = 20;
+// 5. Change the object, close the clip, then connect the power.
+// These charge levels are playful values, not measured charging behaviour.
+const chargeItems = {
+  flat: { name: "Flat battery", image: "assets/flat-battery.png", chargeable: true, start: 20, charge: 20 },
+  small: { name: "Small battery", image: "assets/flat-battery.png", chargeable: true, start: 40, charge: 40 },
+  earphones: { name: "Wired earphones", image: "assets/earphone.png", chargeable: false }
+};
+let selectedItem = "flat";
+let seated = true;
 let pluggedIn = false;
 let idleSteps = 0;
 const STEP = 10;
@@ -151,38 +188,80 @@ const TICK_MS = 900;
 const stage = document.getElementById("charging-stage");
 
 function updateCharge() {
-  const state = pluggedIn ? (battery === 100 ? "full" : "charging") : "unplugged";
+  const item = chargeItems[selectedItem];
+  const state = !item.chargeable ? "incompatible" : pluggedIn ? (item.charge === 100 ? "full" : "charging") : "unplugged";
   stage.dataset.state = state;
-  document.getElementById("battery-number").textContent = battery + "%";
-  document.getElementById("battery-level").value = battery;
-  document.getElementById("battery-dot").style.top = (80 - battery * 0.8) + "px";
+  stage.dataset.item = selectedItem;
+  stage.dataset.seated = String(seated);
+  const meter = document.getElementById("battery-level");
+  meter.hidden = !item.chargeable;
+  meter.value = item.charge || 0;
+  document.getElementById("battery-number").textContent = item.chargeable ? item.charge + "%" : "—";
+  document.getElementById("fit-button").textContent = seated ? "Open clip" : "Clip battery";
+  document.getElementById("fit-button").disabled = pluggedIn || !item.chargeable;
   document.getElementById("charge-button").textContent = pluggedIn ? "Unplug" : "Plug in";
-  document.getElementById("use-button").disabled = pluggedIn || battery === 0;
-  document.getElementById("charge-status").textContent = battery + "% · " + (state === "charging" ? "Charging" : state === "full" ? "Full, still plugged in" : "Unplugged");
-  document.getElementById("charge-thought").textContent = state === "full" ? "The battery is full. " + idleSteps + " idle step(s) have passed. When will you unplug?" : state === "charging" ? "The level rises. Every charge connects this small object to a much larger electricity system." : "The battery is resting. The charger is unplugged.";
+  document.getElementById("charge-button").disabled = !item.chargeable || !seated;
+  document.getElementById("use-button").disabled = pluggedIn || !item.chargeable || item.charge === 0;
+  document.getElementById("charge-status").textContent = item.chargeable ? item.charge + "% · " + (state === "charging" ? "Charging · red lights" : state === "full" ? "Full · green lights" : "Unplugged · lights off") : "No battery to charge · lights off";
+  document.getElementById("item-label").textContent = item.name + " · " + (!item.chargeable ? "not rechargeable" : seated ? "clipped in" : "clip open");
+  stage.setAttribute("aria-label", item.name + (seated ? " held under the charger's clip" : " next to the open clip"));
+  document.querySelector(".indicator-lights").setAttribute("aria-label", "Three indicator lights: " + (state === "charging" ? "red, charging" : state === "full" ? "green, full" : "off"));
+  let thought;
+  if (!item.chargeable) thought = "This wired earphone has no rechargeable battery. Being placed on a charger does not mean it can charge.";
+  else if (state === "full") thought = "Full: active charging has stopped. Still plugged in for " + idleSteps + " idle step(s). When will you unplug?";
+  else if (state === "charging") thought = "The red lights are on. The battery stays under the clip while its simulated charge rises.";
+  else if (!seated) thought = "The clip is open. Close it to hold the battery against the contacts.";
+  else thought = "The battery is clipped in. Plug in to charge, or open the clip to try another object.";
+  document.getElementById("charge-thought").textContent = thought;
 }
 
 function chargingTick() {
-  if (!pluggedIn) return;
-  if (battery < 100) battery = Math.min(100, battery + STEP);
+  const item = chargeItems[selectedItem];
+  if (!pluggedIn || !seated || !item.chargeable) return;
+  if (item.charge < 100) item.charge = Math.min(100, item.charge + STEP);
   else idleSteps++;
   updateCharge();
 }
 setInterval(chargingTick, TICK_MS);
+const itemButtons = [...document.querySelectorAll(".item-buttons [data-item]")];
+function chooseItem(id) {
+  if (id === selectedItem) return;
+  selectedItem = id;
+  pluggedIn = false; // Switching objects also disconnects simulated power.
+  seated = false;
+  idleSteps = 0;
+  const item = chargeItems[id];
+  const image = document.getElementById("charge-item");
+  image.src = item.image;
+  image.alt = item.name;
+  itemButtons.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.item === id)));
+  updateCharge();
+}
+itemButtons.forEach(button => button.addEventListener("click", () => chooseItem(button.dataset.item)));
+document.getElementById("fit-button").addEventListener("click", () => {
+  if (pluggedIn || !chargeItems[selectedItem].chargeable) return;
+  seated = !seated;
+  updateCharge();
+});
 document.getElementById("charge-button").addEventListener("click", () => {
+  if (!seated || !chargeItems[selectedItem].chargeable) return;
   pluggedIn = !pluggedIn;
   updateCharge();
 });
 document.getElementById("use-button").addEventListener("click", () => {
-  if (pluggedIn) return;
-  battery = Math.max(0, battery - 20);
+  const item = chargeItems[selectedItem];
+  if (pluggedIn || !item.chargeable) return;
+  item.charge = Math.max(0, item.charge - 20);
+  seated = false; // Using the battery elsewhere removes it from the clip.
   idleSteps = 0;
   updateCharge();
 });
 document.getElementById("reset-charge").addEventListener("click", () => {
-  battery = 20;
+  Object.values(chargeItems).forEach(item => { if (item.chargeable) item.charge = item.start; });
   pluggedIn = false;
   idleSteps = 0;
+  chooseItem("flat");
+  seated = true;
   updateCharge();
 });
 updateCharge();
