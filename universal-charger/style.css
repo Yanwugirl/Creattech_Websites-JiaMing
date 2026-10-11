@@ -67,23 +67,26 @@ summary { color: #b6b6b0; font-size: 14px; cursor: pointer; }
 .item-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 #charging-stage { position: relative; height: 235px; background: #222420; overflow: hidden; border: 1px solid #363b34; }
 #charging-stage img { image-rendering: pixelated; }
-.charging-rig { position: relative; width: 340px; height: 195px; margin: 5px auto 0; }
-#charge-body, #charge-cover { position: absolute; width: 220px; height: 220px; left: 86px; top: 0; transform: rotate(90deg); pointer-events: none; }
-#charge-body { z-index: 1; }
+.charging-rig { position: relative; width: 340px; height: 195px; margin: 5px auto 0; --hinge-x: 264.75px; --hinge-y: 110px; --clip-anchor-x: 110px; --clip-anchor-y: 41.25px; }
+#charge-body, #charge-cover { position: absolute; width: 220px; height: 220px; pointer-events: none; }
+#charge-body { left: 86px; top: 0; transform: rotate(90deg); z-index: 1; }
 #charge-item { position: absolute; width: 130px; height: 130px; object-fit: contain; left: 30px; top: 48px; z-index: 2; transition: transform .3s steps(3, end); }
-#charge-cover { z-index: 3; opacity: .75; transition: transform .3s steps(3, end); }
+/* The cover's (16, 6) pixel is its hinge. Keep it on the body's right side.
+   Opening changes only the angle, so this point never slides away. */
+#charge-cover { left: calc(var(--hinge-x) - var(--clip-anchor-x)); top: calc(var(--hinge-y) - var(--clip-anchor-y)); transform-origin: var(--clip-anchor-x) var(--clip-anchor-y); transform: rotate(90deg); z-index: 3; opacity: .75; transition: transform .3s steps(3, end); }
 .contact-pins { position: absolute; left: 147px; top: 81px; z-index: 4; display: grid; gap: 28px; }
 .contact-pins i { width: 22px; height: 5px; background: #dbce9b; border: 1px solid #8f855f; }
-.indicator-lights { position: absolute; top: 54px; left: 210px; display: flex; gap: 8px; z-index: 5; }
+.indicator-lights { position: absolute; top: calc(var(--hinge-y) - 24.5px); left: calc(var(--hinge-x) + 8px); display: flex; flex-direction: column; gap: 8px; z-index: 5; }
 .indicator-lights span { width: 11px; height: 11px; border: 1px solid #aaaaa3; background: #41423c; }
 #charging-stage[data-state="charging"] .indicator-lights span { background: #ef6562; }
 #charging-stage[data-state="full"] .indicator-lights span { background: #8ee89e; }
-#charging-stage[data-seated="false"] #charge-cover { transform: rotate(90deg) translateX(-24px); }
+#charging-stage[data-seated="false"] #charge-cover { transform: rotate(112deg); }
 #charging-stage[data-seated="false"] #charge-item { transform: translateX(-24px); }
 #charging-stage[data-seated="false"] .contact-pins { opacity: .35; }
 #charging-stage[data-item="small"] #charge-item { width: 100px; height: 100px; left: 60px; top: 61px; }
-#charging-stage[data-item="earphones"] #charge-item { width: 62px; height: 118px; left: 68px; top: 58px; }
-#charging-stage[data-item="earphones"] .contact-pins { visibility: hidden; }
+#charging-stage[data-item="earphones"] #charge-item { width: 55px; height: 105px; left: 135px; top: 47px; }
+#charging-stage[data-item="earphones"] .contact-pins { left: 176px; top: 146px; display: flex; gap: 4px; }
+#charging-stage[data-item="earphones"] .contact-pins i { width: 5px; height: 18px; }
 #battery-number { position: absolute; right: 14px; top: 12px; color: #eeeeea; font: 16px monospace; }
 #item-label { position: absolute; bottom: 7px; left: 0; width: 100%; margin: 0; text-align: center; font: 14px Arial, sans-serif; color: #b6b6b0; }
 .light-key { margin: 10px 0 0; }

@@ -175,9 +175,9 @@ document.querySelector(".stop-motion").addEventListener("toggle", event => {
 // 5. Change the object, close the clip, then connect the power.
 // These charge levels are playful values, not measured charging behaviour.
 const chargeItems = {
-  flat: { name: "Flat battery", image: "assets/flat-battery.png", chargeable: true, start: 20, charge: 20 },
-  small: { name: "Small battery", image: "assets/flat-battery.png", chargeable: true, start: 40, charge: 40 },
-  earphones: { name: "Wired earphones", image: "assets/earphone.png", chargeable: false }
+  flat: { name: "Flat battery", image: "assets/flat-battery.png", start: 20, charge: 20 },
+  small: { name: "Small battery", image: "assets/flat-battery.png", start: 40, charge: 40 },
+  earphones: { name: "Rechargeable earphone", image: "assets/earphone.png", start: 30, charge: 30 }
 };
 let selectedItem = "flat";
 let seated = true;
@@ -189,35 +189,33 @@ const stage = document.getElementById("charging-stage");
 
 function updateCharge() {
   const item = chargeItems[selectedItem];
-  const state = !item.chargeable ? "incompatible" : pluggedIn ? (item.charge === 100 ? "full" : "charging") : "unplugged";
+  const state = pluggedIn ? (item.charge === 100 ? "full" : "charging") : "unplugged";
   stage.dataset.state = state;
   stage.dataset.item = selectedItem;
   stage.dataset.seated = String(seated);
   const meter = document.getElementById("battery-level");
-  meter.hidden = !item.chargeable;
-  meter.value = item.charge || 0;
-  document.getElementById("battery-number").textContent = item.chargeable ? item.charge + "%" : "—";
-  document.getElementById("fit-button").textContent = seated ? "Open clip" : "Clip battery";
-  document.getElementById("fit-button").disabled = pluggedIn || !item.chargeable;
+  meter.value = item.charge;
+  document.getElementById("battery-number").textContent = item.charge + "%";
+  document.getElementById("fit-button").textContent = seated ? "Open clip" : selectedItem === "earphones" ? "Clip earphone" : "Clip battery";
+  document.getElementById("fit-button").disabled = pluggedIn;
   document.getElementById("charge-button").textContent = pluggedIn ? "Unplug" : "Plug in";
-  document.getElementById("charge-button").disabled = !item.chargeable || !seated;
-  document.getElementById("use-button").disabled = pluggedIn || !item.chargeable || item.charge === 0;
-  document.getElementById("charge-status").textContent = item.chargeable ? item.charge + "% · " + (state === "charging" ? "Charging · red lights" : state === "full" ? "Full · green lights" : "Unplugged · lights off") : "No battery to charge · lights off";
-  document.getElementById("item-label").textContent = item.name + " · " + (!item.chargeable ? "not rechargeable" : seated ? "clipped in" : "clip open");
+  document.getElementById("charge-button").disabled = !seated;
+  document.getElementById("use-button").disabled = pluggedIn || item.charge === 0;
+  document.getElementById("charge-status").textContent = item.charge + "% · " + (state === "charging" ? "Charging · red lights" : state === "full" ? "Full · green lights" : "Unplugged · lights off");
+  document.getElementById("item-label").textContent = item.name + " · " + (seated ? "clipped in" : "clip open");
   stage.setAttribute("aria-label", item.name + (seated ? " held under the charger's clip" : " next to the open clip"));
   document.querySelector(".indicator-lights").setAttribute("aria-label", "Three indicator lights: " + (state === "charging" ? "red, charging" : state === "full" ? "green, full" : "off"));
   let thought;
-  if (!item.chargeable) thought = "This wired earphone has no rechargeable battery. Being placed on a charger does not mean it can charge.";
-  else if (state === "full") thought = "Full: active charging has stopped. Still plugged in for " + idleSteps + " idle step(s). When will you unplug?";
-  else if (state === "charging") thought = "The red lights are on. The battery stays under the clip while its simulated charge rises.";
-  else if (!seated) thought = "The clip is open. Close it to hold the battery against the contacts.";
-  else thought = "The battery is clipped in. Plug in to charge, or open the clip to try another object.";
+  if (state === "full") thought = "Full: active charging has stopped. Still plugged in for " + idleSteps + " idle step(s). When will you unplug?";
+  else if (state === "charging") thought = "The red lights are on. The " + (selectedItem === "earphones" ? "earphone" : "battery") + " stays under the clip while its simulated charge rises.";
+  else if (!seated) thought = "The clip is open. Close it to hold the object against the contacts.";
+  else thought = "Clipped in. Plug in to charge, or open the clip to try another object.";
   document.getElementById("charge-thought").textContent = thought;
 }
 
 function chargingTick() {
   const item = chargeItems[selectedItem];
-  if (!pluggedIn || !seated || !item.chargeable) return;
+  if (!pluggedIn || !seated) return;
   if (item.charge < 100) item.charge = Math.min(100, item.charge + STEP);
   else idleSteps++;
   updateCharge();
@@ -239,25 +237,25 @@ function chooseItem(id) {
 }
 itemButtons.forEach(button => button.addEventListener("click", () => chooseItem(button.dataset.item)));
 document.getElementById("fit-button").addEventListener("click", () => {
-  if (pluggedIn || !chargeItems[selectedItem].chargeable) return;
+  if (pluggedIn) return;
   seated = !seated;
   updateCharge();
 });
 document.getElementById("charge-button").addEventListener("click", () => {
-  if (!seated || !chargeItems[selectedItem].chargeable) return;
+  if (!seated) return;
   pluggedIn = !pluggedIn;
   updateCharge();
 });
 document.getElementById("use-button").addEventListener("click", () => {
   const item = chargeItems[selectedItem];
-  if (pluggedIn || !item.chargeable) return;
+  if (pluggedIn) return;
   item.charge = Math.max(0, item.charge - 20);
-  seated = false; // Using the battery elsewhere removes it from the clip.
+  seated = false; // Using the object elsewhere removes it from the clip.
   idleSteps = 0;
   updateCharge();
 });
 document.getElementById("reset-charge").addEventListener("click", () => {
-  Object.values(chargeItems).forEach(item => { if (item.chargeable) item.charge = item.start; });
+  Object.values(chargeItems).forEach(item => { item.charge = item.start; });
   pluggedIn = false;
   idleSteps = 0;
   chooseItem("flat");
