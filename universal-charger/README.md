@@ -60,7 +60,7 @@ Hama 官方手册：https://support.hama.com/webresources/article-documents/0008
 
 像素万能充来自你原来的 Charge / Piskel 图层。耳机来自 New Piskel (3).zip；扁平电池来自 New Piskel (4).zip 的 sprite_1，小电池使用同一绘图缩小显示。定格动画来自自己的拆解视频。
 
-Contacts 图片已经换成新提供的 7022e355-dc25-4879-a23a-60edd05913f5.png。外壳、线路板、插头、后壳照片来自 Untitled-4、6、7、5；Wires 展示线路板上的连线照片。耳机参考图更新为 72bc3d88-b029-4d81-99da-4bca75af887d.png；另外两张锚点标注图只用于校正 CSS，不会把标记画进作品。
+Contacts 图片已经换成新提供的 7022e355-dc25-4879-a23a-60edd05913f5.png。外壳、线路板、插头、后壳照片来自 Untitled-4、6、7、5；5 号 Wires 的配图来自新提供的 4ad9c346-041d-4271-8d37-4b5d7b991ee7.png，去除白色留边后按原比例缩小。耳机参考图更新为 72bc3d88-b029-4d81-99da-4bca75af887d.png；另外两张锚点标注图只用于校正 CSS，不会把标记画进作品。
 
 交互结构参考同学的 `Project0_web_2026-10-09(1).zip` 和教师的 From Blender to Browser 教程。此版本重新编写代码，未复制同学的电子烟素材或研究内容。
 

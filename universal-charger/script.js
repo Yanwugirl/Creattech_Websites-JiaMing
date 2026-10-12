@@ -43,7 +43,7 @@ const facts = {
     source: "US EPA, Electronics Donation and Recycling, 2025.",
     url: "https://www.epa.gov/recycle/electronics-donation-and-recycling",
     image: "assets/wires-photo.webp",
-    imageAlt: "The wires connected to the disassembled circuit board",
+    imageAlt: "The looped wire component from the disassembled charger",
     note: "The wire metal in this object has not been identified. The source describes electronics generally."
   },
   lights: {
