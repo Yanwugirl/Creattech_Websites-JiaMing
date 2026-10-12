@@ -72,7 +72,7 @@ const layers = [
   { image: 0 },
   { id: "back", image: 4, x: 48, y: 256, number: 7 },
   { id: "lights", image: 7, x: 144, y: 30, number: 6 },
-  { id: "wires", image: 6, x: 82, y: 95, number: 5 },
+  { id: "wires", image: 6, x: 120, y: 60, number: 5 },
   { id: "board", image: 2, x: 225, y: 75, number: 2 },
   { id: "contacts", image: 3, x: 209, y: 254, number: 4 },
   { id: "plug", image: 1, x: 230, y: 190, number: 3 },

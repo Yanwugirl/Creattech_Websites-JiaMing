@@ -46,7 +46,10 @@ a { color: #a6d0b3; font-size: 14px; text-underline-offset: 3px; }
 .part.board.apart { transform: translate(40px, -45px); }
 .part.plug.apart { transform: translate(60px, 0); }
 .part.contacts.apart { transform: translate(44px, 32px); }
-.part.wires.apart { transform: translate(-38px, -20px); }
+/* Pull the small wires into the left-hand space and above the cover.
+   A one-pixel dark edge keeps the original pale pixels easy to see. */
+.part.wires.apart { transform: translate(-115px, -20px); z-index: 12; }
+.part.wires.apart img { filter: drop-shadow(1px 0 #151515) drop-shadow(-1px 0 #151515) drop-shadow(0 1px #151515) drop-shadow(0 -1px #151515); }
 .part.lights.apart { transform: translate(0, -32px); }
 .part.back.apart { transform: translate(-32px, 42px); }
 .part-buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 16px 0; }
