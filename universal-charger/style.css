@@ -87,9 +87,12 @@ summary { color: #b6b6b0; font-size: 14px; cursor: pointer; }
 #charging-stage[data-seated="false"] #charge-clip { transform: perspective(600px) rotateY(65deg) rotateZ(90deg); }
 #charging-stage[data-seated="false"] #charge-item { transform: translateX(-24px); }
 #charging-stage[data-item="small"] #charge-item { width: 100px; height: 100px; left: 60px; top: 61px; }
-#charging-stage[data-item="earphones"] #charge-item { width: 55px; height: 105px; left: 135px; top: 47px; }
-#charging-stage[data-item="earphones"] .contact-pins { left: 146px; top: 116px; display: grid; gap: 4px; }
+#charging-stage[data-item="earphones"] #charge-item { width: 55px; height: 105px; left: 115px; top: 55px; transform: translateX(0) rotate(-90deg); }
+#charging-stage[data-item="earphones"][data-seated="false"] #charge-item { transform: translateX(-24px) rotate(-90deg); }
+#charging-stage[data-item="earphones"] .contact-pins { left: 90px; top: 111px; display: grid; gap: 4px; }
 #charging-stage[data-item="earphones"] .contact-pins i { width: 18px; height: 5px; }
+#charging-bolt { position: absolute; left: 304px; top: 96px; width: 24px; height: 28px; object-fit: contain; pointer-events: none; z-index: 6; animation: charge-spark 1.2s steps(2, end) infinite; }
+@keyframes charge-spark { 0%, 100% { opacity: .35; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-2px); } }
 #battery-number { position: absolute; right: 14px; top: 12px; color: #eeeeea; font: 16px monospace; }
 #item-label { position: absolute; bottom: 7px; left: 0; width: 100%; margin: 0; text-align: center; font: 14px Arial, sans-serif; color: #b6b6b0; }
 .light-key { margin: 10px 0 0; }

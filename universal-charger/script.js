@@ -191,6 +191,7 @@ function updateCharge() {
   const item = chargeItems[selectedItem];
   const state = pluggedIn ? (item.charge === 100 ? "full" : "charging") : "unplugged";
   stage.dataset.state = state;
+  document.getElementById("charging-bolt").hidden = state !== "charging";
   stage.dataset.item = selectedItem;
   stage.dataset.seated = String(seated);
   const meter = document.getElementById("battery-level");
