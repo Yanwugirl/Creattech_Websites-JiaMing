@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Take a universal charger apart and follow the hidden costs of charging.">
+  <title>Universal charger</title>
+  <link rel="icon" href="assets/charger.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Universal charger</h1>
+    <p>What keeps working when we stop looking?</p>
+  </header>
+
+  <main>
+    <!-- LEFT: the object is built from the pixel layers in script.js. -->
+    <section class="object-panel" aria-labelledby="object-title">
+      <h2 id="object-title">Look inside</h2>
+      <p class="hint">Hover to look. Click a number to move its part.</p>
+      <div class="object-stage">
+        <div id="object" aria-label="A handmade pixel universal charger">
+          <img id="whole" src="assets/charger.png" alt="An assembled universal charger" width="32" height="32">
+        </div>
+      </div>
+      <div class="part-buttons" aria-label="Choose a part">
+        <button data-part="shell">1 · Shell</button>
+        <button data-part="board">2 · Board</button>
+        <button data-part="plug">3 · Plug</button>
+        <button data-part="contacts">4 · Contacts</button>
+        <button data-part="wires">5 · Wires</button>
+        <button data-part="lights">6 · Lights</button>
+        <button data-part="back">7 · Back case</button>
+      </div>
+      <button id="assemble" class="small-button">Put it back together</button>
+      <p id="part-status" class="hint" role="status">Everything is in place.</p>
+      <details class="stop-motion">
+        <summary>See the real object come apart</summary>
+        <div id="film" role="img" aria-label="Original stop-motion film of the charger being taken apart"></div>
+        <button id="play-film" class="small-button">Play again</button>
+      </details>
+    </section>
+
+    <!-- RIGHT: a fact card and a small charging experiment. -->
+    <div class="right-panel">
+      <section id="card" aria-labelledby="card-title">
+        <h2 id="card-title">Every part has a history.</h2>
+        <p id="card-fact">Choose a part to find one thing you cannot see from the outside.</p>
+        <img id="card-image" alt="" hidden>
+        <p id="card-source" class="hint" hidden></p>
+        <a id="source-link" target="_blank" rel="noopener noreferrer" hidden>Read the source</a>
+        <p id="card-note" class="note" hidden></p>
+        <button id="ask-button" class="small-button" hidden>Ask the charger</button>
+        <p id="model-output" class="note" role="status"></p>
+      </section>
+
+      <section class="charging-panel" aria-labelledby="charging-title">
+        <h2 id="charging-title">A little more charge</h2>
+        <p class="hint">Choose an object. Clip it in. See what fits.</p>
+        <div class="item-buttons" role="group" aria-label="Choose an object to try">
+          <button data-item="flat" aria-pressed="true">Flat battery</button>
+          <button data-item="small" aria-pressed="false">Small battery</button>
+          <button data-item="earphones" aria-pressed="false">Earphones</button>
+        </div>
+        <div id="charging-stage" data-state="unplugged" data-item="flat" data-seated="true" aria-label="A flat battery held under the charger's clip">
+          <div class="charging-rig">
+            <img id="charge-body" src="assets/part-4.png" alt="">
+            <img id="charge-item" src="assets/flat-battery.png" alt="A removable flat battery">
+            <div id="charge-clip">
+              <img id="charge-cover" src="assets/part-5.png" alt="">
+              <div class="contact-pins" aria-hidden="true"><i></i><i></i></div>
+            </div>
+            <div class="indicator-lights" role="img" aria-label="Three indicator lights are off">
+              <span></span><span></span><span></span>
+            </div>
+            <img id="charging-bolt" src="assets/charging-bolt.png" alt="" aria-hidden="true" hidden>
+          </div>
+          <output id="battery-number" aria-label="Simulated battery charge">20%</output>
+          <p id="item-label">Flat battery · clipped in</p>
+        </div>
+        <p class="light-key hint">Red = charging · Green = full · Off = unplugged</p>
+        <progress id="battery-level" max="100" value="20" aria-label="Simulated battery level">20%</progress>
+        <p id="charge-status" role="status">20% · Unplugged</p>
+        <div class="charge-buttons">
+          <button id="fit-button">Open clip</button>
+          <button id="charge-button">Plug in</button>
+          <button id="use-button">Use elsewhere</button>
+          <button id="reset-charge" class="small-button">Reset</button>
+        </div>
+        <p id="charge-thought">The battery is resting. The charger is unplugged.</p>
+        <p class="note">A visual simulation: charge levels and timing are invented. These three lamps simplify charging into red and full into green; real LED codes depend on the model.</p>
+        <details class="charging-notes">
+          <summary>What can a universal charger really charge?</summary>
+          <p class="note">The clips are for compatible removable batteries with matching contacts and voltage. The two battery sizes here are imagined compatible cells. “Universal” does not mean every object fits.</p>
+          <div class="reference-images">
+            <figure><img src="assets/battery-reference.webp" alt="Reference photo of a battery held under a universal charger's clip" loading="lazy"><figcaption>A battery under the clip</figcaption></figure>
+            <figure><img src="assets/earphone-reference.webp" alt="Your reference photo of an earphone held on a universal charger" loading="lazy"><figcaption>An earphone under the clip</figcaption></figure>
+          </div>
+          <p class="note">The earphone here is a rechargeable model, inspired by your reference. Its compatible connection is assumed for this experiment; the photo cannot verify its voltage or charging circuit.</p>
+          <p class="note">Compare <a href="https://support.hama.com/webresources/article-documents/00081/man/00081380man_cs_de_en_es_fi_fr_it_nl_pl_pt_ru_sv.pdf" target="_blank" rel="noopener noreferrer">Hama's battery-charger manual</a> and a <a href="https://patents.google.com/patent/CN213586214U/zh" target="_blank" rel="noopener noreferrer">contact-based earphone charger design</a>. These describe other products, not the exact charger shown here.</p>
+        </details>
+      </section>
+    </div>
+  </main>
+  <p id="asset-warning" class="warning" role="alert" hidden>An image did not load. You can still use the part buttons and read the facts.</p>
+  <noscript><p class="warning">Enable JavaScript to move the parts and use the charging experiment.</p></noscript>
+</body>
+</html>
