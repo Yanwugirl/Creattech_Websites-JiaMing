@@ -1,0 +1,60 @@
+{
+  "shell": {
+    "title": "The shell begins before the charger.",
+    "fact": "A 2017 charger study found that making 1 kg of recycled PC plastic caused about 30% of the resource-depletion impact of virgin PC.",
+    "source": "Mobile-phone charger LCA, KSEE, 2017.",
+    "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002300013",
+    "image": "assets/shell-photo.webp",
+    "note": "A material comparison, not a measurement of this charger. Its exact plastic has not been identified."
+  },
+  "board": {
+    "title": "A small board carries a long history.",
+    "fact": "Making the circuit board and casing drove pre-manufacturing impacts in that study. This stage contributed over 98% in four impact categories.",
+    "source": "Mobile-phone charger LCA, KSEE, 2017.",
+    "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002300013",
+    "image": "assets/board-photo.webp",
+    "note": "The four categories were acidification, eutrophication, ozone depletion and photochemical oxidant formation. This is not 98% of all impacts."
+  },
+  "plug": {
+    "title": "The cost keeps flowing during use.",
+    "fact": "In the same study, use caused 70% of global-warming impact and 94.4% of resource-depletion impact, mostly from electricity consumption.",
+    "source": "Mobile-phone charger LCA, KSEE, 2017.",
+    "url": "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002300013",
+    "image": "assets/plug-photo.webp",
+    "note": "These figures describe a different charger under that study's assumptions. They are not readings from this charging experiment."
+  },
+  "contacts": {
+    "title": "Taking it apart is not the end.",
+    "fact": "Only 22.3% of global electronic waste was documented as formally collected and recycled in 2022. Separating a few parts does not mean they will all be recovered.",
+    "source": "ITU / UNITAR, The Global E-waste Monitor 2024.",
+    "url": "https://www.itu.int/en/ITU-D/Environment/Pages/Publications/The-Global-E-waste-Monitor-2024.aspx",
+    "image": "assets/contact-photo.webp",
+    "note": "This is a global e-waste figure, not a charger-specific recycling rate. The future disposal route of this object is unknown."
+  },
+  "wires": {
+    "title": "A short connection. A longer material story.",
+    "fact": "Electronics contain metals that take energy to extract and manufacture. Recovering these materials through proper collection can keep them in circulation.",
+    "source": "US EPA, Electronics Donation and Recycling, 2025.",
+    "url": "https://www.epa.gov/recycle/electronics-donation-and-recycling",
+    "image": "assets/wires-photo.webp",
+    "imageAlt": "The looped wire component from the disassembled charger",
+    "note": "The wire metal in this object has not been identified. The source describes electronics generally."
+  },
+  "lights": {
+    "title": "Full does not mean switched off.",
+    "fact": "A light can show that charging has finished while the charger stays connected. Hama lists 0.0582 W of no-load power for one charger's adapter.",
+    "source": "Hama Delta Ovum LCD operating instructions, p. 5.",
+    "url": "https://support.hama.com/webresources/article-documents/00081/man/00081380man_cs_de_en_es_fi_fr_it_nl_pl_pt_ru_sv.pdf",
+    "image": "assets/indicator-photo.webp",
+    "imageAlt": "Three indicator lights on the reference universal charger",
+    "note": "A published figure for Hama's adapter, not a reading from this older charger. Its exact LED codes are unverified."
+  },
+  "back": {
+    "title": "There is no invisible bin.",
+    "fact": "The world generated 62 million tonnes of electronic waste in 2022. A casing is one small part of a much larger waste stream.",
+    "source": "ITU / UNITAR, The Global E-waste Monitor 2024.",
+    "url": "https://www.itu.int/en/ITU-D/Environment/Pages/Publications/The-Global-E-waste-Monitor-2024.aspx",
+    "image": "assets/back-photo.webp",
+    "note": "A global total, not this object's footprint. Taking the casing off does not guarantee it will be recycled."
+  }
+}

@@ -1,0 +1,130 @@
+/* The page is deliberately small: one object, one card, one experiment. */
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #151515; color: #eeeeea; font-family: Georgia, serif; }
+header { text-align: center; margin: 28px 16px 24px; }
+h1 { font-size: 30px; font-weight: normal; margin: 0 0 8px; }
+header p { color: #b6b6b0; margin: 0; font-size: 16px; }
+h2 { font-size: 23px; font-weight: normal; margin: 0 0 12px; }
+p { font-size: 16px; line-height: 1.6; margin: 12px 0; }
+main { display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 440px); justify-content: center; gap: 32px; padding: 0 24px 32px; }
+.object-panel { text-align: center; }
+.hint, .note { color: #b6b6b0; font-size: 14px; line-height: 1.6; }
+.hint { margin: 0 0 14px; }
+.note { margin-top: 14px; }
+button { font: 14px Arial, sans-serif; color: #eeeeea; background: #292929; border: 1px solid #62625b; padding: 9px 12px; cursor: pointer; border-radius: 3px; }
+button:hover { background: #373a35; border-color: #9dc8aa; }
+button:disabled { opacity: .45; cursor: default; }
+button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid #a6d0b3; outline-offset: 4px; }
+button[aria-pressed="true"] { border-color: #a6d0b3; color: #b9e9c8; }
+.small-button { padding: 6px 10px; background: transparent; }
+[hidden] { display: none !important; }
+a { color: #a6d0b3; font-size: 14px; text-underline-offset: 3px; }
+
+/* Each layer keeps the original 32 × 32 drawing, enlarged ten times. */
+.object-stage { min-height: 390px; background: #222420; border: 1px solid #363b34; overflow: hidden; }
+#object { position: relative; width: 320px; height: 320px; margin: 25px auto 40px; }
+#whole, .part img { width: 320px; height: 320px; image-rendering: pixelated; pointer-events: none; }
+#whole { position: absolute; inset: 0; }
+.part { position: absolute; inset: 0; pointer-events: none; transition: transform .65s steps(6, end); }
+.part img { opacity: 0; }
+#object.is-open .part img { opacity: 1; }
+#object.is-open #whole { visibility: hidden; }
+.part .hit { position: absolute; width: 30px; height: 30px; padding: 0; pointer-events: auto; border-radius: 0; background: #151515; font: 14px monospace; }
+.part:has(.hit:hover) img { filter: brightness(1.2); }
+.part.static { pointer-events: none; }
+.part.shell { z-index: 10; }
+.part.back { z-index: 2; }
+.part.board { z-index: 5; }
+.part.plug { z-index: 6; }
+.part.contacts { z-index: 7; }
+.part.wires { z-index: 8; }
+.part.lights { z-index: 9; }
+/* The cover has to move to let us see any of the inner parts. */
+#object.is-open .part.shell { transform: translate(-36px, -10px); }
+#object.is-open .part.shell.apart { transform: translate(-55px, -30px); }
+.part.board.apart { transform: translate(40px, -45px); }
+.part.plug.apart { transform: translate(60px, 0); }
+.part.contacts.apart { transform: translate(44px, 32px); }
+/* Pull the small wires into the left-hand space and above the cover.
+   A one-pixel dark edge keeps the original pale pixels easy to see. */
+.part.wires.apart { transform: translate(-115px, -20px); z-index: 12; }
+.part.wires.apart img { filter: drop-shadow(1px 0 #151515) drop-shadow(-1px 0 #151515) drop-shadow(0 1px #151515) drop-shadow(0 -1px #151515); }
+.part.lights.apart { transform: translate(0, -32px); }
+.part.back.apart { transform: translate(-32px, 42px); }
+.part-buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 16px 0; }
+#part-status { margin: 10px 0 0; }
+.stop-motion { text-align: left; margin-top: 24px; border-top: 1px solid #45453f; padding-top: 16px; }
+summary { color: #b6b6b0; font-size: 14px; cursor: pointer; }
+#film { width: 144px; height: 192px; margin: 14px 0; background: url('assets/disassembly.webp') 0 0 / 1200% 100% no-repeat; }
+#film.play { animation: film 3s steps(11, end) forwards; }
+@keyframes film { from { background-position: 0 0; } to { background-position: 100% 0; } }
+
+/* The card stays still. JavaScript changes only its contents. */
+#card { background: #252525; padding: 22px; min-height: 235px; border: 1px solid #40403b; }
+#card-image { display: block; width: 110px; height: 86px; object-fit: contain; margin: 12px 0; }
+#card-source { margin-bottom: 4px; }
+#model-output:empty { display: none; }
+#ask-button { margin-top: 12px; }
+#model-tools { margin-top: 16px; border-top: 1px solid #40403b; padding-top: 8px; }
+#model-output { white-space: pre-wrap; overflow-wrap: anywhere; }
+.charging-panel { margin-top: 26px; }
+.item-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+#charging-stage { position: relative; height: 235px; background: #222420; overflow: hidden; border: 1px solid #363b34; }
+#charging-stage img { image-rendering: pixelated; }
+.charging-rig { position: relative; width: 340px; height: 195px; margin: 5px auto 0; --hinge-x: 264.75px; --hinge-y: 110px; --clip-anchor-x: 110px; --clip-anchor-y: 41.25px; }
+#charge-body, #charge-clip { position: absolute; width: 220px; height: 220px; pointer-events: none; }
+#charge-body { left: 86px; top: 0; transform: rotate(90deg); z-index: 1; }
+#charge-item { position: absolute; width: 130px; height: 130px; object-fit: contain; left: 30px; top: 48px; z-index: 2; transition: transform .3s steps(3, end); }
+/* The cover's (16, 6) pixel is its hinge. rotateZ only orients the drawing.
+   Positive rotateY brings the free edge toward the viewer (+Z).
+   The camera stays face-on: opening does not add a view from above. */
+#charge-clip { left: calc(var(--hinge-x) - var(--clip-anchor-x)); top: calc(var(--hinge-y) - var(--clip-anchor-y)); transform-origin: var(--clip-anchor-x) var(--clip-anchor-y); transform: perspective(600px) rotateY(0deg) rotateZ(90deg); z-index: 3; transition: transform .45s steps(5, end); }
+#charge-cover { position: absolute; inset: 0; width: 220px; height: 220px; z-index: 1; opacity: .75; }
+/* Both pins sit on the cover. Their local coordinates are rotated together
+   with the entire clip, and their paint layer stays above the glass. */
+.contact-pins { position: absolute; left: 81px; top: 137px; z-index: 2; display: flex; gap: 28px; }
+.contact-pins i { width: 5px; height: 22px; background: #dbce9b; border: 1px solid #8f855f; }
+.indicator-lights { position: absolute; top: calc(var(--hinge-y) - 24.5px); left: calc(var(--hinge-x) + 8px); display: flex; flex-direction: column; gap: 8px; z-index: 5; }
+.indicator-lights span { width: 11px; height: 11px; border: 1px solid #aaaaa3; background: #41423c; }
+#charging-stage[data-state="charging"] .indicator-lights span { background: #ef6562; }
+#charging-stage[data-state="full"] .indicator-lights span { background: #8ee89e; }
+#charging-stage[data-seated="false"] #charge-clip { transform: perspective(600px) rotateY(65deg) rotateZ(90deg); }
+#charging-stage[data-seated="false"] #charge-item { transform: translateX(-24px); }
+#charging-stage[data-item="small"] #charge-item { width: 100px; height: 100px; left: 60px; top: 61px; }
+#charging-stage[data-item="earphones"] #charge-item { width: 55px; height: 105px; left: 115px; top: 55px; transform: translateX(0) rotate(-90deg); }
+#charging-stage[data-item="earphones"][data-seated="false"] #charge-item { transform: translateX(-24px) rotate(-90deg); }
+/* The clip rotates this local layout 90 degrees: the two contacts become
+   horizontal on screen, one above the other, touching the earphone stem. */
+#charging-stage[data-item="earphones"] .contact-pins { left: 82px; top: 118px; display: flex; gap: 4px; }
+#charging-stage[data-item="earphones"] .contact-pins i { width: 5px; height: 18px; }
+#charging-bolt { position: absolute; left: 304px; top: 96px; width: 24px; height: 28px; object-fit: contain; pointer-events: none; z-index: 6; animation: charge-spark 1.2s steps(2, end) infinite; }
+@keyframes charge-spark { 0%, 100% { opacity: .35; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-2px); } }
+#battery-number { position: absolute; right: 14px; top: 12px; color: #eeeeea; font: 16px monospace; }
+#item-label { position: absolute; bottom: 7px; left: 0; width: 100%; margin: 0; text-align: center; font: 14px Arial, sans-serif; color: #b6b6b0; }
+.light-key { margin: 10px 0 0; }
+#battery-level { display: block; width: 100%; height: 9px; margin-top: 14px; accent-color: #a6d0b3; }
+#charge-status { font: 14px monospace; margin: 10px 0 14px; color: #b9e9c8; }
+.charge-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+#charge-thought { min-height: 50px; margin: 14px 0 0; font-size: 16px; }
+.charging-notes { margin-top: 16px; border-top: 1px solid #45453f; padding-top: 12px; }
+.reference-images { display: flex; gap: 16px; }
+.reference-images figure { margin: 0; width: 50%; }
+.reference-images img { display: block; width: 100%; height: 100px; object-fit: contain; }
+.reference-images figcaption { margin-top: 6px; font-size: 13px; color: #b6b6b0; }
+.warning { max-width: 920px; padding: 12px 24px; margin: auto; color: #f2c7a0; }
+
+@media (max-width: 740px) {
+  main { grid-template-columns: minmax(0, 440px); gap: 26px; padding: 0 16px 28px; }
+  header { margin-top: 22px; }
+  h1 { font-size: 28px; }
+}
+@media (max-width: 380px) {
+  #object { width: 320px; height: 280px; margin-left: calc(50% - 160px); transform: scale(.875); transform-origin: top center; }
+  .object-stage { min-height: 345px; }
+  .charging-rig { margin-left: calc(50% - 170px); transform: scale(.9); transform-origin: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  #film.play { background-position: 100% 0; }
+}
