@@ -4,12 +4,25 @@
 
 公开网页：https://yanwugirl.github.io/creattech_websites-JiaMing/universal-charger/charger.html
 
+## Windows 一键打开网页
+
+1. 下载最新版源码包，右键「全部解压」。
+2. 打开 Ollama 应用。
+3. 进入包含 charger.html 和 server.js 的 universal-charger 文件夹，双击 start.cmd。
+4. 浏览器会自动打开本地页面，保持黑色启动窗口运行。
+
+启动文件会自动定位项目目录并检查 Node.js。如果 Ollama 正在运行但缺少 gemma3:1b，它会下载模型。端口 8000 被占用时，网页服务器会尝试 8001、8002 等，并打开实际使用的地址。
+
+本地网址指向你自己的电脑；网页服务器成功运行后才能访问。下载 Ollama 是模型程序，网页还需要 server.js 提供页面和 JSON。电脑缺少 Node.js 时，启动窗口会给出明确提示：到 https://nodejs.org/en/download 安装 Windows 的 LTS 版本，再双击 start.cmd。
+
+如果仍打不开，保留启动窗口，把窗口中的错误文字发来。不要只尝试点击聊天里的本地链接，优先使用启动文件自动打开的地址。
+
 ## 在 VS Code 中打开
 
 1. 解压整个文件夹，不要只拿出 HTML。
 2. 在 VS Code 选择「文件 → 打开文件夹」。
 3. 打开 `charger.html`、`style.css`、`script.js`。
-4. 在「终端 → 新建终端」运行 `node server.js`，保持终端运行，再打开 `http://127.0.0.1:8000/charger.html`。JSON 读取与模型调用需要通过这个本地服务器运行。
+4. 双击 `start.cmd`，或者在「终端 → 新建终端」运行 `node server.js --open`。浏览器会打开实际运行地址；保持服务器窗口运行。JSON 读取与模型调用需要通过这个本地服务器运行。
 
 ## 三个文件分别做什么
 
@@ -18,6 +31,7 @@
 - `script.js`：读取 JSON、点击状态、物品选择、夹持与充电循环，以及 Ollama 连接检查与模型按钮。
 - `data/facts.json`：七条研究内容、对应照片、出处与适用范围。
 - `server.js`：本地网页服务器，转交 Ollama API 请求。
+- `start.cmd`：Windows 一键启动，检查 Node.js、准备模型并打开浏览器。
 - `assets/`：自己的像素作品、定格动画与新拍摄的拆解部件照片。
 
 ## 怎么玩
@@ -53,13 +67,13 @@ Earphones 使用你提供的像素耳机素材，按最新参考图作为可充�
    第一次会下载模型。下载完成后可以运行 `ollama list`，确认列表中有 `gemma3:1b`。
 4. 在同一个项目终端执行：
    ```powershell
-   node server.js
+   node server.js --open
    ```
-5. 保留终端运行，在浏览器打开 http://127.0.0.1:8000/charger.html。
+5. 保留终端运行，浏览器会自动打开本地网页。如果没有自动打开，复制终端打印的网址；端口可能是 8000 或下一空闲端口。
 6. 右侧显示 “Ollama ready” 后，点击任一部件，再点 **Ask the charger**。如果显示缺少模型或 Ollama 未运行，按提示处理后点 **Check connection**。
 7. 真实生成的回答会出现在按钮下方，并标有 “AI-generated reflection · Ollama / gemma3:1b”。第一条回答可能需要约一分钟；报错时会显示错误提示，没有预写的假回答。
 
-按 Ctrl+C 停止网页服务器。如果提示端口 8000 被占用，先停止旧的 Python / Live Server / Node 服务再重试。如果终端不认识 `node`，需要先安装 Node.js；如果不认识 `ollama`，重新打开终端后再试。
+按 Ctrl+C 停止网页服务器。端口 8000 被占用时会自动尝试其他本地端口；使用终端打印的实际网址。如果终端不认识 `node`，需要先安装 Node.js；如果不认识 `ollama`，重新打开终端后再试。
 
 公开 GitHub Pages 保留拆解、JSON 事实和充电交互。Ollama 模型按钮在本地网页显示，因为 GitHub Pages 不运行 server.js，也不能连接你的电脑。课堂演示请使用上面的本地网址。
 

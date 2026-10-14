@@ -1,0 +1,31 @@
+{
+  "explanation": "The owner authorized removal of these unconfigured nested repository pointers to restore GitHub Pages deployment. The self-reference also led to nested older versions of this repository. The prior pointers are listed here and can be recovered from the recorded commit. The linked repositories were not modified.",
+  "recorded_from_commit": "ef1aab1c7248e94dbb0291f72265947dd8ab055f",
+  "gitlinks": [
+    {
+      "path": "CreativeTech_Project0",
+      "mode": "160000",
+      "commit_sha": "7a9d234a849064072456036ddf413df8881c6010"
+    },
+    {
+      "path": "creattech_websites-JiaMing",
+      "mode": "160000",
+      "commit_sha": "6b4f38242c0a41588d706394a14b8db53c786284"
+    },
+    {
+      "path": "ct1-week2-html-css-basics",
+      "mode": "160000",
+      "commit_sha": "2e73dc65d2b63d32e255b9380b73af15565bdde6"
+    },
+    {
+      "path": "ct1-week2-more-html-css-and-intro-to-js",
+      "mode": "160000",
+      "commit_sha": "56c555052649493717ada93cd162674c0ba590ee"
+    },
+    {
+      "path": "ct1-week3-sprite-animation-web",
+      "mode": "160000",
+      "commit_sha": "f4e17e8b6c46c9501a61660091a2ec62bd6b20c7"
+    }
+  ]
+}

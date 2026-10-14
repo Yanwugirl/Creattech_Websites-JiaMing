@@ -4,6 +4,7 @@
 const http = require("node:http");
 const fs = require("node:fs/promises");
 const path = require("node:path");
+const { spawn } = require("node:child_process");
 const ROOT = __dirname;
 const MODEL = "gemma3:1b";
 const PORT = 8000;
@@ -135,20 +136,52 @@ function createServer(ollamaBase = OLLAMA) {
   });
 }
 
+function openBrowser(url) {
+  const [command, args] = process.platform === "win32"
+    ? ["cmd.exe", ["/d", "/c", 'start "" "' + url + '"']]
+    : process.platform === "darwin" ? ["open", [url]] : ["xdg-open", [url]];
+  const browser = spawn(command, args, { detached: true, stdio: "ignore", windowsHide: true });
+  browser.on("error", () => console.log("Open this address in your browser: " + url));
+  browser.unref();
+}
+
+// If an old server occupies 8000, open the page on the next free local port.
+function startServer({ port = PORT, open = false } = {}) {
+  const server = createServer();
+  let attempts = 0;
+  return new Promise((resolve, reject) => {
+    function ready() {
+      server.removeListener("error", failed);
+      const url = "http://127.0.0.1:" + server.address().port + "/charger.html";
+      console.log("Universal charger: " + url);
+      console.log("Keep this window and Ollama open. Press Ctrl+C to stop.");
+      if (open) openBrowser(url);
+      resolve({ server, url });
+    }
+    function failed(error) {
+      server.removeListener("listening", ready);
+      if (error.code !== "EADDRINUSE" || ++attempts >= 10) return reject(error);
+      console.log("Port " + (port + attempts - 1) + " is in use. Trying " + (port + attempts) + ".");
+      listen();
+    }
+    function listen() {
+      server.once("error", failed);
+      server.once("listening", ready);
+      server.listen(port + attempts, "127.0.0.1");
+    }
+    listen();
+  });
+}
+
 if (require.main === module) {
   if (Number(process.versions.node.split(".")[0]) < 18) {
     console.error("This helper needs Node 18 or newer.");
     process.exit(1);
   }
-  const server = createServer();
-  server.listen(PORT, "127.0.0.1", () => {
-    console.log("Universal charger: http://127.0.0.1:" + PORT + "/charger.html");
-    console.log("Keep Ollama open. Model: " + MODEL + ". Press Ctrl+C to stop.");
-  });
-  server.on("error", error => {
-    console.error(error.code === "EADDRINUSE" ? "Port 8000 is in use. Stop the previous server with Ctrl+C, then run again." : error.message);
+  startServer({ open: process.argv.includes("--open") }).catch(error => {
+    console.error(error.code === "EADDRINUSE" ? "Ports 8000-8009 are in use. Stop an old server, then try again." : error.message);
     process.exitCode = 1;
   });
 }
 
-module.exports = { createServer };
+module.exports = { createServer, startServer };
