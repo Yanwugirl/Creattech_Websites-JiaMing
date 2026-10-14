@@ -66,6 +66,8 @@ summary { color: #b6b6b0; font-size: 14px; cursor: pointer; }
 #card-source { margin-bottom: 4px; }
 #model-output:empty { display: none; }
 #ask-button { margin-top: 12px; }
+#model-tools { margin-top: 16px; border-top: 1px solid #40403b; padding-top: 8px; }
+#model-output { white-space: pre-wrap; overflow-wrap: anywhere; }
 .charging-panel { margin-top: 26px; }
 .item-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 #charging-stage { position: relative; height: 235px; background: #222420; overflow: hidden; border: 1px solid #363b34; }

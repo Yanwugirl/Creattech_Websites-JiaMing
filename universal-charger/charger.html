@@ -52,8 +52,13 @@
         <p id="card-source" class="hint" hidden></p>
         <a id="source-link" target="_blank" rel="noopener noreferrer" hidden>Read the source</a>
         <p id="card-note" class="note" hidden></p>
-        <button id="ask-button" class="small-button" hidden>Ask the charger</button>
-        <p id="model-output" class="note" role="status"></p>
+        <div id="model-tools" hidden>
+          <p id="model-status" class="note" role="status">Checking the local model…</p>
+          <button id="check-model" class="small-button">Check connection</button>
+          <button id="ask-button" class="small-button" hidden disabled>Ask the charger</button>
+          <p id="model-output" class="note" role="status"></p>
+          <p id="model-meta" class="hint" hidden></p>
+        </div>
       </section>
 
       <section class="charging-panel" aria-labelledby="charging-title">

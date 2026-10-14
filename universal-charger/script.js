@@ -1,69 +1,8 @@
 "use strict";
 
-// 1. Seven facts. Keep these short and keep the evidence visible.
-const study = "https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002300013";
-const manual = "https://support.hama.com/webresources/article-documents/00081/man/00081380man_cs_de_en_es_fi_fr_it_nl_pl_pt_ru_sv.pdf";
-const ewaste = "https://www.itu.int/en/ITU-D/Environment/Pages/Publications/The-Global-E-waste-Monitor-2024.aspx";
-const facts = {
-  shell: {
-    title: "The shell begins before the charger.",
-    fact: "A 2017 charger study found that making 1 kg of recycled PC plastic caused about 30% of the resource-depletion impact of virgin PC.",
-    source: "Mobile-phone charger LCA, KSEE, 2017.",
-    url: study,
-    image: "assets/shell-photo.webp",
-    note: "A material comparison, not a measurement of this charger. Its exact plastic has not been identified."
-  },
-  board: {
-    title: "A small board carries a long history.",
-    fact: "Making the circuit board and casing drove pre-manufacturing impacts in that study. This stage contributed over 98% in four impact categories.",
-    source: "Mobile-phone charger LCA, KSEE, 2017.",
-    url: study,
-    image: "assets/board-photo.webp",
-    note: "The four categories were acidification, eutrophication, ozone depletion and photochemical oxidant formation. This is not 98% of all impacts."
-  },
-  plug: {
-    title: "The cost keeps flowing during use.",
-    fact: "In the same study, use caused 70% of global-warming impact and 94.4% of resource-depletion impact, mostly from electricity consumption.",
-    source: "Mobile-phone charger LCA, KSEE, 2017.",
-    url: study,
-    image: "assets/plug-photo.webp",
-    note: "These figures describe a different charger under that study's assumptions. They are not readings from this charging experiment."
-  },
-  contacts: {
-    title: "Taking it apart is not the end.",
-    fact: "Only 22.3% of global electronic waste was documented as formally collected and recycled in 2022. Separating a few parts does not mean they will all be recovered.",
-    source: "ITU / UNITAR, The Global E-waste Monitor 2024.",
-    url: ewaste,
-    image: "assets/contact-photo.webp",
-    note: "This is a global e-waste figure, not a charger-specific recycling rate. The future disposal route of this object is unknown."
-  },
-  wires: {
-    title: "A short connection. A longer material story.",
-    fact: "Electronics contain metals that take energy to extract and manufacture. Recovering these materials through proper collection can keep them in circulation.",
-    source: "US EPA, Electronics Donation and Recycling, 2025.",
-    url: "https://www.epa.gov/recycle/electronics-donation-and-recycling",
-    image: "assets/wires-photo.webp",
-    imageAlt: "The looped wire component from the disassembled charger",
-    note: "The wire metal in this object has not been identified. The source describes electronics generally."
-  },
-  lights: {
-    title: "Full does not mean switched off.",
-    fact: "A light can show that charging has finished while the charger stays connected. Hama lists 0.0582 W of no-load power for one charger's adapter.",
-    source: "Hama Delta Ovum LCD operating instructions, p. 5.",
-    url: manual,
-    image: "assets/indicator-photo.webp",
-    imageAlt: "Three indicator lights on the reference universal charger",
-    note: "A published figure for Hama's adapter, not a reading from this older charger. Its exact LED codes are unverified."
-  },
-  back: {
-    title: "There is no invisible bin.",
-    fact: "The world generated 62 million tonnes of electronic waste in 2022. A casing is one small part of a much larger waste stream.",
-    source: "ITU / UNITAR, The Global E-waste Monitor 2024.",
-    url: ewaste,
-    image: "assets/back-photo.webp",
-    note: "A global total, not this object's footprint. Taking the casing off does not guarantee it will be recycled."
-  }
-};
+// 1. The researched facts live in data/facts.json, loaded with fetch().
+let facts = {};
+let factsError = "";
 
 // 2. Build the object from the user's original pixel layers.
 // All layer images share the same 32 × 32 canvas, so they line up.
@@ -104,14 +43,29 @@ layers.forEach(layer => {
 
 // 3. A click toggles the part, and changes the right-hand fact card.
 let currentFact = null;
+let currentPart = null;
 let modelRequest = null;
+let modelReady = false;
+let modelChecking = false;
 const openParts = new Set();
 const partButtons = [...document.querySelectorAll("[data-part]")];
 const localPage = ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
 
 function showFact(id) {
-  if (modelRequest) modelRequest.abort();
-  currentFact = facts[id];
+  if (modelRequest) {
+    modelRequest.abort();
+    modelRequest = null;
+  }
+  currentPart = id;
+  currentFact = facts[id] || null;
+  document.getElementById("model-output").textContent = "";
+  document.getElementById("model-meta").hidden = true;
+  updateModelControls();
+  if (!currentFact) {
+    document.getElementById("card-title").textContent = "This part has a story.";
+    document.getElementById("card-fact").textContent = factsError || "Loading the researched fact…";
+    return;
+  }
   document.getElementById("card-title").textContent = currentFact.title;
   document.getElementById("card-fact").textContent = currentFact.fact;
   const photo = document.getElementById("card-image");
@@ -124,9 +78,25 @@ function showFact(id) {
   document.getElementById("source-link").hidden = false;
   document.getElementById("card-note").textContent = currentFact.note;
   document.getElementById("card-note").hidden = false;
-  document.getElementById("model-output").textContent = "";
-  document.getElementById("ask-button").hidden = !localPage;
-  document.getElementById("ask-button").disabled = false;
+}
+
+async function loadFacts() {
+  try {
+    const response = await fetch("data/facts.json");
+    if (!response.ok) throw new Error("Fact file missing");
+    const data = await response.json();
+    for (const layer of layers.filter(layer => layer.id)) {
+      const fact = data[layer.id];
+      if (!fact || !["title", "fact", "source", "url", "image", "note"].every(key => typeof fact[key] === "string" && fact[key].trim())) {
+        throw new Error("Fact fields missing");
+      }
+    }
+    facts = data;
+    if (currentPart) showFact(currentPart);
+  } catch (error) {
+    factsError = "The facts could not load. Run node server.js in this folder, then open http://127.0.0.1:8000/charger.html. On the published site, check that data/facts.json was uploaded.";
+    document.getElementById("card-fact").textContent = factsError;
+  }
 }
 
 function updateObject() {
@@ -265,39 +235,84 @@ document.getElementById("reset-charge").addEventListener("click", () => {
 });
 updateCharge();
 
-// 6. Optional local model call from the teacher's tutorial.
-// It appears only on localhost. The public page has no API key or paid calls.
+// 6. Ask a real local model through the small helper in server.js.
+// The public page keeps its object and facts; Ollama runs on your own laptop.
+function updateModelControls() {
+  document.getElementById("model-tools").hidden = !localPage;
+  document.getElementById("ask-button").hidden = !localPage;
+  document.getElementById("ask-button").disabled = !currentFact || !modelReady || !!modelRequest;
+  document.getElementById("check-model").disabled = modelChecking || !!modelRequest;
+}
+
+async function checkModel() {
+  if (!localPage || modelChecking) return;
+  modelChecking = true;
+  modelReady = false;
+  updateModelControls();
+  const status = document.getElementById("model-status");
+  status.textContent = "Checking Ollama…";
+  try {
+    const response = await fetch("/api/model-status", { signal: AbortSignal.timeout(10000) });
+    if (!response.headers.get("content-type")?.includes("application/json")) {
+      throw new Error("Run node server.js, then open http://127.0.0.1:8000/charger.html.");
+    }
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "The local server could not check Ollama.");
+    modelReady = data.ready === true;
+    status.textContent = data.message;
+  } catch (error) {
+    status.textContent = error.name === "TimeoutError"
+      ? "The connection check took too long. Open Ollama and try again."
+      : error.message + " Check that the page was started with node server.js and Ollama is open.";
+  } finally {
+    modelChecking = false;
+    updateModelControls();
+  }
+}
+
+document.getElementById("check-model").addEventListener("click", checkModel);
 document.getElementById("ask-button").addEventListener("click", async () => {
-  if (!currentFact || !localPage) return;
-  const factAtStart = currentFact;
+  if (!currentFact || !localPage || !modelReady || modelRequest) return;
+  const partAtStart = currentPart;
   const request = new AbortController();
   modelRequest = request;
-  const timeout = setTimeout(() => request.abort(), 45000);
-  const button = document.getElementById("ask-button");
+  const timeout = setTimeout(() => request.abort(), 135000);
   const output = document.getElementById("model-output");
-  button.disabled = true;
-  output.textContent = "Thinking…";
+  const meta = document.getElementById("model-meta");
+  meta.hidden = true;
+  output.textContent = "Thinking… The first reply may take a minute while the model loads.";
+  updateModelControls();
   try {
-    const response = await fetch("http://localhost:11434/api/generate", {
+    const response = await fetch("/api/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "gemma3:1b", prompt: "Speak as an old universal charger in simple English. In two short sentences, reflect on this fact. Do not invent numbers or pretend this study measured you: " + factAtStart.fact, stream: false }),
+      body: JSON.stringify({ part: partAtStart }),
       signal: request.signal
     });
-    if (!response.ok) throw new Error("Model request failed");
     const data = await response.json();
-    if (data.error || !data.response) throw new Error("No model response");
-    if (currentFact === factAtStart) output.textContent = data.response;
+    if (!response.ok || data.error) throw new Error(data.error || "Ollama could not answer.");
+    if (typeof data.response !== "string" || !data.response.trim()) throw new Error("Ollama returned an empty answer. Please try again.");
+    if (modelRequest !== request || currentPart !== partAtStart) return;
+    output.textContent = data.response;
+    meta.textContent = "AI-generated reflection · Ollama / " + data.model;
+    meta.hidden = false;
   } catch (error) {
-    if (currentFact === factAtStart) output.textContent = "No local model response. Start Ollama with gemma3:1b, then try again from localhost. This text is an error message, not an AI answer.";
+    if (modelRequest !== request || currentPart !== partAtStart) return;
+    output.textContent = request.signal.aborted
+      ? "The reply took too long. Check Ollama and try again."
+      : "No model reply: " + error.message;
+    modelReady = false;
+    document.getElementById("model-status").textContent = "Check the connection before asking again.";
   } finally {
     clearTimeout(timeout);
     if (modelRequest === request) {
       modelRequest = null;
-      button.disabled = false;
+      updateModelControls();
     }
   }
 });
+updateModelControls();
+if (localPage) checkModel();
 
 // 7. A broken image should not stop the object buttons or the facts.
 document.querySelectorAll("img").forEach(image => {
@@ -305,3 +320,5 @@ document.querySelectorAll("img").forEach(image => {
     document.getElementById("asset-warning").hidden = false;
   });
 });
+
+const factsReady = loadFacts();

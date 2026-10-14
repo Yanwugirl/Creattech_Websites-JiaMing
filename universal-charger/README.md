@@ -1,6 +1,6 @@
 # Universal charger
 
-普通 HTML / CSS / JavaScript 项目。没有框架、打包步骤或付费 API。
+普通 HTML / CSS / JavaScript 项目。没有框架或打包步骤；本地 Ollama 通过一个 Node.js helper 调用，不使用付费 API。
 
 公开网页：https://yanwugirl.github.io/creattech_websites-JiaMing/universal-charger/charger.html
 
@@ -9,13 +9,15 @@
 1. 解压整个文件夹，不要只拿出 HTML。
 2. 在 VS Code 选择「文件 → 打开文件夹」。
 3. 打开 `charger.html`、`style.css`、`script.js`。
-4. 基本网页可以直接双击 `charger.html` 打开。也可以右键 HTML → Open with Live Server。
+4. 在「终端 → 新建终端」运行 `node server.js`，保持终端运行，再打开 `http://127.0.0.1:8000/charger.html`。JSON 读取与模型调用需要通过这个本地服务器运行。
 
 ## 三个文件分别做什么
 
 - `charger.html`：左侧物件、右侧事实卡、充电区域和按钮。
 - `style.css`：两列布局、部件位移、像素放大和逐帧动画。
-- `script.js`：七条研究内容、点击状态、物品选择、夹持与充电循环，以及可选本地模型调用。
+- `script.js`：读取 JSON、点击状态、物品选择、夹持与充电循环，以及 Ollama 连接检查与模型按钮。
+- `data/facts.json`：七条研究内容、对应照片、出处与适用范围。
+- `server.js`：本地网页服务器，转交 Ollama API 请求。
 - `assets/`：自己的像素作品、定格动画与新拍摄的拆解部件照片。
 
 ## 怎么玩
@@ -38,15 +40,44 @@ Earphones 使用你提供的像素耳机素材，按最新参考图作为可充�
 
 所有充电数字都是设计的交互状态，不是能耗测量。两种尺寸的电池是假设兼容的示意电池，未验证实物的电压或触点。三盏灯同时红色 / 绿色是本页面的简化视觉规则，并非已确认的实物说明书。照片与像素插脚的位置是作品表达，不是电路图。
 
-## 教师例子中的模型调用
+## Ollama 模型调用：在你的电脑上演示
 
-本地运行时，选中事实后会出现 Ask the charger。它调用你自己电脑的 Ollama：
+需要 Node.js 18 或以上，以及你已经安装的 Ollama。这个本地调用不需要付费 API key。网页通过 server.js 转交请求，因此不用设置跨域环境变量。
 
-1. 已有 Ollama 时，在终端运行 `ollama pull gemma3:1b` 并启动 Ollama。
-2. 在本项目文件夹中运行 `python -m http.server 8000`。
-3. 打开 `http://localhost:8000/charger.html`，选部件，再点 Ask the charger。
+1. 下载最新源码，解压后在 VS Code 打开整个 universal-charger 文件夹。
+2. 打开 Ollama 应用，保持它运行。
+3. 在 VS Code 的「终端 → 新建终端」执行：
+   ```powershell
+   ollama pull gemma3:1b
+   ```
+   第一次会下载模型。下载完成后可以运行 `ollama list`，确认列表中有 `gemma3:1b`。
+4. 在同一个项目终端执行：
+   ```powershell
+   node server.js
+   ```
+5. 保留终端运行，在浏览器打开 http://127.0.0.1:8000/charger.html。
+6. 右侧显示 “Ollama ready” 后，点击任一部件，再点 **Ask the charger**。如果显示缺少模型或 Ollama 未运行，按提示处理后点 **Check connection**。
+7. 真实生成的回答会出现在按钮下方，并标有 “AI-generated reflection · Ollama / gemma3:1b”。第一条回答可能需要约一分钟；报错时会显示错误提示，没有预写的假回答。
 
-公开 GitHub Pages 网站不运行你的本地 Ollama，所以公开页面会隐藏模型按钮。真实模型回答需在你的电脑上验证；源码不包含任何 API key，也不会把错误消息当模型回答。
+按 Ctrl+C 停止网页服务器。如果提示端口 8000 被占用，先停止旧的 Python / Live Server / Node 服务再重试。如果终端不认识 `node`，需要先安装 Node.js；如果不认识 `ollama`，重新打开终端后再试。
+
+公开 GitHub Pages 保留拆解、JSON 事实和充电交互。Ollama 模型按钮在本地网页显示，因为 GitHub Pages 不运行 server.js，也不能连接你的电脑。课堂演示请使用上面的本地网址。
+
+## 给教授展示调用过程
+
+- `data/facts.json`：七条整理过的研究事实，每个可拆部件有一条，保留真实来源和适用范围。
+- `script.js` 的 `loadFacts()`：用 fetch 读取 JSON，再填充右侧卡片。
+- `script.js` 的模型按钮：POST /api/ask，提交当前部件的 id。
+- `server.js`：从同一 JSON 读事实，把事实、出处和限制加入 prompt，然后调用 Ollama 的 /api/generate，使用 stream: false。
+- 浏览器 F12 → Network：查看 /api/ask 的请求和真实 response。界面中 “AI-generated reflection” 标记把生成的反思与有来源的事实分开。
+
+prompt 以旧万能充的第一人称说两句简单英文，回应当前事实，并问一个关于照顾、维修或拔电的小问题。它要求模型不编造数据、不确定未知材料、不把其他产品的研究当成这个物件的实测。小模型仍可能答错，研究依据以卡片的来源为准。可以在 server.js 顶部修改 PROMPT，让它成为你自己的物件声音。
+
+接入和错误流程已使用测试接口检查；当前运行环境没有真实 Ollama 模型，**一次真实模型调用仍需在你的电脑上完成**。成功标准是按钮显示模型生成的回答，并且 /api/ask 返回 HTTP 200 和非空的 response。
+
+Ollama 官方说明：https://docs.ollama.com/api/generate  
+模型列表接口：https://docs.ollama.com/api/tags  
+模型：https://ollama.com/library/gemma3:1b
 
 ## 研究与素材
 
