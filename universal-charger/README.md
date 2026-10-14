@@ -2,7 +2,7 @@
 
 普通 HTML / CSS / JavaScript 项目。没有框架或打包步骤；本地 Ollama 通过一个 Node.js helper 调用，不使用付费 API。
 
-公开网页：https://yanwugirl.github.io/creattech_websites-JiaMing/universal-charger/charger.html
+公开网页：https://yanwugirl.github.io/Universal-charger/universal-charger/charger.html
 
 ## Windows 一键打开网页
 

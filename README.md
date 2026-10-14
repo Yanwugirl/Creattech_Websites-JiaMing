@@ -1,3 +1,22 @@
+# Universal charger and course showcase
+
+万能充交互作品的代码在 [universal-charger/](universal-charger/) 中；课程博客和其他作业保留原来的根目录结构。
+
+- 万能充网页：https://yanwugirl.github.io/Universal-charger/universal-charger/charger.html
+- 课程博客：https://yanwugirl.github.io/Universal-charger/
+
+在 VS Code 打开整个仓库后，可直接在根目录终端运行：
+
+```powershell
+node universal-charger/server.js --open
+```
+
+也可以打开 `universal-charger` 文件夹，双击其中的 `start.cmd`。展示真实模型回答时保持 Ollama 运行。
+
+本仓库保留迁移前的完整 Git 提交历史。后续修改均在此仓库进行。
+
+---
+
 # Creative Technologies MSc: showcase site template
 
 Your weekly blog and project showcase for Creative Tech 1, Ideas in Art & Tech, and
