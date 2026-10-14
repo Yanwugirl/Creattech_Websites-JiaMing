@@ -1,9 +1,9 @@
 # Universal charger and course showcase
 
-万能充交互作品的代码在 [universal-charger/](universal-charger/) 中；课程博客和其他作业保留原来的根目录结构。
+万能充交互作品的代码在 [universal-charger/](universal-charger/) 中
 
 - 万能充网页：https://yanwugirl.github.io/Universal-charger/universal-charger/charger.html
-- 课程博客：https://yanwugirl.github.io/Universal-charger/
+- 课程博客：https://yanwugirl.github.io/Creattech_Websites-JiaMing/
 
 在 VS Code 打开整个仓库后，可直接在根目录终端运行：
 
