@@ -1,19 +1,18 @@
-# Universal charger and course showcase
+# Course showcase
 
-万能充交互作品的代码在 [universal-charger/](universal-charger/) 中
+课程博客：https://yanwugirl.github.io/Creattech_Websites-JiaMing/
 
-- 万能充网页：https://yanwugirl.github.io/Creattech_Websites-JiaMing/universal-charger/charger.html
-- 课程博客：https://yanwugirl.github.io/Creattech_Websites-JiaMing/
+万能充交互作品已迁移至独立仓库：[Project-0-](https://github.com/Yanwugirl/Project-0-)。
 
-在 VS Code 打开整个仓库后，可直接在根目录终端运行：
+在 VS Code 打开新仓库文件夹后，在终端运行：
 
 ```powershell
-node universal-charger/server.js --open
+node server.js --open
 ```
 
-也可以打开 `universal-charger` 文件夹，双击其中的 `start.cmd`。展示真实模型回答时保持 Ollama 运行。
+也可以双击新仓库中的 `start.cmd`。展示真实模型回答时保持 Ollama 运行。
 
-本仓库保留迁移前的完整 Git 提交历史。后续修改均在此仓库进行。
+课程博客继续在本仓库更新，万能充作品后续在新仓库更新。本仓库保留原有 Git 提交历史。
 
 ---
 
