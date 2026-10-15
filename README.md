@@ -2,7 +2,7 @@
 
 万能充交互作品的代码在 [universal-charger/](universal-charger/) 中
 
-- 万能充网页：https://yanwugirl.github.io/Universal-charger/universal-charger/charger.html
+- 万能充网页：https://yanwugirl.github.io/Creattech_Websites-JiaMing/universal-charger/charger.html
 - 课程博客：https://yanwugirl.github.io/Creattech_Websites-JiaMing/
 
 在 VS Code 打开整个仓库后，可直接在根目录终端运行：
