@@ -1,0 +1,189 @@
+/* The opening uses the same colours, serif text and original pixel sprites.
+   The phone, cable and drawer are simple shapes drawn with CSS. */
+.opening { min-height: 100svh; display: grid; place-items: center; padding: 28px 24px; }
+.opening-inner { width: 100%; max-width: 860px; text-align: center; }
+.opening-eyebrow { color: #babcae; font: 11px monospace; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 12px; }
+#opening-title { font-size: clamp(30px, 4vw, 42px); line-height: 1.16; margin: 0 0 24px; }
+#opening-title:focus, #charger-title:focus { outline: none; }
+.opening-comic { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
+.comic-panel { position: relative; margin: 0; padding: 12px 12px 10px; background: #222420; border: 1px solid #4a4d43; }
+.panel-number { position: absolute; top: 9px; left: 10px; color: #7f8579; font: 10px monospace; }
+.speech { display: inline-block; position: relative; color: #e0e0d3; background: #32352d; border: 1px solid #64685c; font: 12px/1.4 Arial, sans-serif; margin: 4px 0 0; padding: 6px 9px; }
+.speech::after { content: ""; position: absolute; width: 7px; height: 7px; bottom: -5px; left: 19px; background: #32352d; border-bottom: 1px solid #64685c; border-right: 1px solid #64685c; transform: rotate(45deg); }
+.comic-drawing { height: 112px; position: relative; }
+.comic-panel figcaption { color: #b6b6b0; font: 12px/1.5 Arial, sans-serif; }
+.pixel-phone { position: absolute; width: 52px; height: 82px; background: #575a51; border: 3px solid #babdac; box-shadow: 3px 3px 0 #121510; }
+.story-phone { left: calc(50% - 26px); top: 19px; transform: rotate(-7deg); }
+.pixel-phone::before { content: ""; position: absolute; top: 3px; left: 16px; width: 14px; height: 2px; background: #151515; }
+.phone-screen { position: absolute; top: 11px; left: 4px; right: 4px; height: 48px; background: #191e16; color: #eab89e; display: grid; align-content: center; justify-items: center; gap: 6px; font: 15px monospace; }
+.phone-meter { position: relative; width: 20px; height: 10px; border: 1px solid #b5b6a5; }
+.phone-meter::before { content: ""; position: absolute; width: 3px; height: 6px; background: #eab89e; top: 1px; left: 1px; }
+.phone-meter::after { content: ""; position: absolute; right: -4px; top: 2px; width: 2px; height: 4px; background: #b5b6a5; }
+.pixel-phone > i { position: absolute; left: 18px; bottom: 4px; width: 10px; height: 7px; border: 1px solid #b5b6a5; }
+.comic-sigh { position: absolute; top: 25px; left: calc(50% + 34px); color: #afba9f; font: 20px monospace; }
+.broken-cable { position: absolute; left: calc(50% - 87px); top: 53px; width: 174px; height: 28px; transform: rotate(-9deg); }
+.broken-cable i { position: absolute; display: block; }
+.cable-plug { left: 3px; top: 0; width: 23px; height: 27px; background: #717468; border: 2px solid #c0c2ad; }
+.cable-plug::before { content: ""; position: absolute; left: 5px; top: -11px; height: 9px; width: 3px; background: #b9bca5; box-shadow: 7px 0 #b9bca5; }
+.cable-left { left: 25px; top: 12px; width: 44px; height: 17px; border-bottom: 3px solid #afb3a2; border-right: 3px solid #afb3a2; }
+.broken-cable > span { position: absolute; left: 79px; top: 5px; color: #dbab91; font: 26px monospace; }
+.cable-right { left: 107px; top: 15px; height: 3px; width: 41px; background: #afb3a2; }
+.cable-end { left: 147px; top: 10px; width: 22px; height: 12px; border: 2px solid #c0c2ad; background: #6b6e62; }
+.drawer-scene { overflow: hidden; }
+.pixel-drawer { position: absolute; width: 135px; height: 37px; left: calc(50% - 67px); bottom: 8px; border: 2px solid #7f8870; background: #373c30; transform: skewX(-9deg); }
+.pixel-drawer::before { content: ""; position: absolute; top: -13px; left: 8px; width: 126px; height: 11px; border: 2px solid #7f8870; background: #20261c; }
+.pixel-drawer > i { position: absolute; width: 29px; height: 5px; border: 1px solid #a4ae96; top: 13px; left: 49px; }
+.drawer-question { position: absolute; left: calc(50% - 10px); top: 15px; font: 32px Georgia, serif; color: #cbd4ba; }
+.rescue-battery { position: absolute; width: 37px; height: 37px; left: calc(50% - 46px); top: 46px; image-rendering: pixelated; transform: rotate(-8deg); }
+.rescue-charger { position: absolute; width: 80px; height: 80px; left: calc(50% - 13px); top: 13px; image-rendering: pixelated; opacity: 0; }
+.rescue-spark { position: absolute; width: 24px; height: 26px; left: calc(50% + 48px); top: 21px; object-fit: contain; image-rendering: pixelated; opacity: 0; }
+#opening-question { font-size: 23px; line-height: 1.35; margin-bottom: 6px; }
+.opening-context { color: #b6b6b0; font-size: 14px; margin: 0 0 20px; }
+.opening-answers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.answer { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; background: #252722; min-height: 105px; padding: 13px 10px 12px; border-radius: 0; border-color: #565b4c; }
+.answer:hover { background: #2e3329; }
+.answer-letter { position: absolute; left: 8px; top: 8px; font: 11px monospace; color: #8f9783; }
+.answer-name { font: 13px/1.3 Arial, sans-serif; }
+.answer-picture { position: relative; height: 45px; width: 75px; display: grid; place-items: center; }
+.answer-picture img { width: 54px; height: 54px; image-rendering: pixelated; }
+.pixel-bank { position: relative; display: block; width: 55px; height: 29px; border: 2px solid #b1b69e; background: #4f5545; box-shadow: 3px 3px 0 #161913; }
+.pixel-bank::after { content: ""; position: absolute; height: 8px; width: 2px; background: #b1b69e; top: 8px; right: -6px; }
+.pixel-bank > i { position: absolute; height: 8px; width: 12px; border: 1px solid #a4a897; top: 8px; left: 8px; }
+.pixel-cable { display: block; position: relative; width: 63px; height: 34px; }
+.pixel-cable::before { content: ""; position: absolute; left: 12px; top: 9px; width: 38px; height: 20px; border: 2px solid #abb39b; border-top: 0; }
+.pixel-cable > i, .pixel-cable > b { position: absolute; top: 0; width: 12px; height: 15px; background: #65705b; border: 2px solid #abb39b; }
+.pixel-cable > i { left: 7px; }
+.pixel-cable > b { right: 7px; width: 9px; height: 11px; top: 3px; }
+.mini-phone { width: 25px; height: 41px; top: 1px; left: 23px; border-width: 2px; }
+.mini-phone::before { left: 6px; width: 9px; height: 1px; top: 2px; }
+.mini-phone .phone-screen { top: 7px; left: 3px; right: 3px; height: 23px; }
+.mini-phone > i { width: 5px; height: 3px; left: 8px; bottom: 2px; }
+.shake-lines { position: absolute; left: 54px; top: 10px; color: #aab49a; font: 17px monospace; }
+.opening-feedback { min-height: 75px; padding: 14px 0 4px; }
+#opening-result { margin: 0 0 4px; font-size: 18px; line-height: 1.25; }
+#opening-explanation { margin: 0; font: 13px/1.5 Arial, sans-serif; color: #b6b6b0; }
+.opening-feedback.wrong #opening-result { color: #e5b498; }
+.opening-feedback.right #opening-result { color: #b9e9c8; }
+.answer.is-wrong { border-color: #c89377; animation: wrong-answer .38s steps(4, end); }
+.answer.is-correct { border-color: #b9e9c8; background: #303b2d; color: #b9e9c8; }
+.answer:disabled { opacity: .55; }
+.answer.is-correct:disabled { opacity: 1; }
+.opening-skip { color: #b6b6b0; background: transparent; border: 0; font-size: 13px; padding: 8px 12px; }
+.opening-skip:hover { color: #dce6d2; background: transparent; border: 0; }
+.opening-skip span { margin-left: 6px; }
+.opening-replay { margin-top: 13px; border: 0; font-size: 12px; color: #aab69c; }
+.opening-comic.wrong .story-phone { animation: disappointed-phone .4s steps(4, end); }
+.opening-comic.recharged .story-phone { transform: rotate(0); transition: transform .45s steps(4, end); }
+.opening-comic.recharged .phone-screen { color: #b9e9c8; }
+.opening-comic.recharged .phone-meter::before { width: 14px; background: #b9e9c8; }
+.opening-comic.recharged .comic-sigh { visibility: hidden; }
+.opening-comic.rescued .drawer-question { display: none; }
+.opening-comic.rescued .rescue-charger { opacity: 1; animation: found-charger .55s steps(5, end) both; }
+.opening-comic.rescued .rescue-battery { animation: rescue-battery .75s steps(6, end) .3s both; }
+.opening-comic.rescued .rescue-spark { opacity: 1; animation: rescue-spark .6s steps(2, end) .8s both; }
+@keyframes wrong-answer { 0%, 100% { transform: translateX(0); } 25%, 75% { transform: translateX(-4px); } 50% { transform: translateX(4px); } }
+@keyframes disappointed-phone { 0%, 100% { transform: rotate(-7deg); } 25%, 75% { transform: rotate(-13deg); } 50% { transform: rotate(0deg); } }
+@keyframes found-charger { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes rescue-battery { from { transform: translate(0, 0) rotate(-8deg); } to { transform: translate(45px, -10px) rotate(0deg); } }
+@keyframes rescue-spark { 0% { opacity: 0; transform: scale(.7); } 50%, 100% { opacity: 1; transform: scale(1); } }
+
+/* Only two small marks in the margin of the existing object panel. */
+.object-panel { position: relative; }
+.margin-doodles { position: absolute; left: -29px; top: 97px; display: grid; gap: 54px; opacity: .45; pointer-events: none; }
+.margin-doodles img { width: 17px; height: 20px; image-rendering: pixelated; object-fit: contain; }
+.little-battery { position: relative; display: block; width: 13px; height: 24px; border: 1px solid #b3bfa1; }
+.little-battery::before { content: ""; position: absolute; width: 5px; height: 2px; background: #b3bfa1; top: -4px; left: 3px; }
+.little-battery > i { position: absolute; bottom: 2px; left: 2px; width: 7px; height: 9px; background: #b3bfa1; }
+@media (max-width: 1010px) { .margin-doodles { display: none; } }
+@media (max-width: 620px) {
+  .opening { padding: 28px 16px; }
+  .opening-comic { gap: 7px; }
+  .comic-panel { padding: 9px 5px; }
+  .panel-number { display: none; }
+  .speech { font-size: 10px; padding: 5px 4px; }
+  .comic-drawing { height: 100px; transform: scale(.82); transform-origin: center bottom; }
+  .comic-panel figcaption { font-size: 10px; }
+  #opening-question { font-size: 22px; }
+  .opening-answers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .answer { min-height: 100px; }
+  .opening-feedback { min-height: 88px; }
+}
+@media (max-width: 420px) {
+  .comic-panel { overflow: hidden; }
+  .comic-drawing { transform: scale(.65); }
+  .speech { min-height: 38px; display: flex; align-items: center; justify-content: center; }
+  .comic-panel figcaption { min-height: 30px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .opening-comic.rescued .rescue-battery { transform: translate(45px, -10px); }
+}
+
+/* Combined preview: original discovery, flat-battery charge, original payoff. */
+#opening-charge { position: relative; height: 235px; background: #222420; overflow: hidden; border: 1px solid #363b34; }
+#opening-charge img { image-rendering: pixelated; }
+.charging-rig { position: relative; width: 340px; height: 195px; margin: 5px auto 0; --hinge-x: 264.75px; --hinge-y: 110px; --clip-anchor-x: 110px; --clip-anchor-y: 41.25px; }
+#opening-body, #opening-clip { position: absolute; width: 220px; height: 220px; pointer-events: none; }
+#opening-body { left: 86px; top: 0; transform: rotate(90deg); z-index: 1; }
+#opening-item { position: absolute; width: 130px; height: 130px; object-fit: contain; left: 30px; top: 48px; z-index: 2; transition: transform .3s steps(3, end); }
+/* The cover's (16, 6) pixel is its hinge. rotateZ only orients the drawing.
+   Positive rotateY brings the free edge toward the viewer (+Z).
+   The camera stays face-on: opening does not add a view from above. */
+#opening-clip { left: calc(var(--hinge-x) - var(--clip-anchor-x)); top: calc(var(--hinge-y) - var(--clip-anchor-y)); transform-origin: var(--clip-anchor-x) var(--clip-anchor-y); transform: perspective(600px) rotateY(0deg) rotateZ(90deg); z-index: 3; transition: transform .45s steps(5, end); }
+#opening-cover { position: absolute; inset: 0; width: 220px; height: 220px; z-index: 1; opacity: .75; }
+/* Both pins sit on the cover. Their local coordinates are rotated together
+   with the entire clip, and their paint layer stays above the glass. */
+.contact-pins { position: absolute; left: 81px; top: 137px; z-index: 2; display: flex; gap: 28px; }
+.contact-pins i { width: 5px; height: 22px; background: #dbce9b; border: 1px solid #8f855f; }
+.indicator-lights { position: absolute; top: calc(var(--hinge-y) - 24.5px); left: calc(var(--hinge-x) + 8px); display: flex; flex-direction: column; gap: 8px; z-index: 5; }
+.indicator-lights span { width: 11px; height: 11px; border: 1px solid #aaaaa3; background: #41423c; }
+#opening-charge[data-state="charging"] .indicator-lights span { background: #ef6562; }
+#opening-charge[data-state="full"] .indicator-lights span { background: #8ee89e; }
+#opening-charge[data-seated="false"] #opening-clip { transform: perspective(600px) rotateY(65deg) rotateZ(90deg); }
+#opening-charge[data-seated="false"] #opening-item { transform: translateX(-24px); }
+#opening-charge[data-item="small"] #opening-item { width: 100px; height: 100px; left: 60px; top: 61px; }
+#opening-charge[data-item="earphones"] #opening-item { width: 55px; height: 105px; left: 115px; top: 55px; transform: translateX(0) rotate(-90deg); }
+#opening-charge[data-item="earphones"][data-seated="false"] #opening-item { transform: translateX(-24px) rotate(-90deg); }
+/* The clip rotates this local layout 90 degrees: the two contacts become
+   horizontal on screen, one above the other, touching the earphone stem. */
+#opening-charge[data-item="earphones"] .contact-pins { left: 82px; top: 118px; display: flex; gap: 4px; }
+#opening-charge[data-item="earphones"] .contact-pins i { width: 5px; height: 18px; }
+#opening-bolt { position: absolute; left: 304px; top: 96px; width: 24px; height: 28px; object-fit: contain; pointer-events: none; z-index: 6; animation: charge-spark 1.2s steps(2, end) infinite; }
+
+
+#opening-charge { position:absolute; inset:0; height:112px; border:0; background:#222420; }
+#opening-charge .charging-rig { position:absolute; left:50%; top:0; margin:0; transform:translateX(-50%) scale(.55); transform-origin:top center; }
+#opening-charge .opening-level { position:absolute; right:5px; top:5px; font:11px monospace; }
+.opening-comic.charging-scene .pixel-drawer,
+.opening-comic.charging-scene .rescue-battery,
+.opening-comic.charging-scene .rescue-charger,
+.opening-comic.charging-scene .rescue-spark { visibility:hidden; }
+@media(prefers-reduced-motion:reduce) {
+  #opening-charge *, .opening-comic.rescued * { animation:none !important; transition:none !important; }
+}
+
+/* One persistent rig and battery: no image or scene replacement. */
+.drawer-scene > .rescue-battery,
+.drawer-scene > .rescue-charger,
+.drawer-scene > .rescue-spark { display:none !important; }
+#opening-charge { background:transparent; overflow:visible; pointer-events:none; }
+.pixel-drawer { transition:opacity .8s ease, transform .9s cubic-bezier(.22,.61,.36,1); }
+.opening-comic.rescued .pixel-drawer { opacity:.18; transform:translateY(17px) skewX(-9deg); }
+#opening-body { transition:transform .85s cubic-bezier(.22,.61,.36,1), opacity .7s ease; }
+#opening-clip { transition:transform .75s cubic-bezier(.22,.61,.36,1), opacity .7s ease; }
+#opening-charge .indicator-lights { transition:opacity .7s ease, translate .85s cubic-bezier(.22,.61,.36,1); }
+#opening-charge .indicator-lights span { transition:background .45s ease; }
+#opening-charge[data-phase="idle"] #opening-body { opacity:0; transform:translateY(65px) rotate(90deg); }
+#opening-charge[data-phase="idle"] #opening-clip { opacity:0; transform:translateY(65px) perspective(600px) rotateY(65deg) rotateZ(90deg); }
+#opening-charge[data-phase="idle"] .indicator-lights { opacity:0; translate:0 65px; }
+#opening-charge #opening-item { transform-origin:center; transition:transform .9s cubic-bezier(.22,.61,.36,1); }
+#opening-charge[data-phase="idle"] #opening-item,
+#opening-charge[data-phase="discover"] #opening-item { transform:translate(22px,3px) scale(.52) rotate(-8deg); }
+#opening-charge[data-phase="insert"] #opening-item { transform:translateX(0) scale(1) rotate(0); }
+#opening-charge .opening-level { opacity:0; transition:opacity .5s ease; }
+#opening-charge[data-state="charging"] .opening-level,
+#opening-charge[data-state="full"] .opening-level { opacity:1; }
+.opening-comic.recharged .story-phone { transition:transform .6s ease; }
+.phone-screen, .phone-meter::before { transition:color .5s ease, background .5s ease, width .6s ease; }
+@media(prefers-reduced-motion:reduce) {
+  #opening-charge *, .pixel-drawer, .story-phone, .phone-screen, .phone-meter::before { transition:none !important; }
+}

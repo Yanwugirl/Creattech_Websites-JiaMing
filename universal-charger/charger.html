@@ -7,17 +7,92 @@
   <title>Universal charger</title>
   <link rel="icon" href="assets/charger.png" type="image/png">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="opening.css">
   <script src="script.js" defer></script>
+  <script src="opening.js" defer></script>
 </head>
 <body>
+  <!-- A short opening. Without JavaScript the main page stays visible. -->
+  <section id="opening" class="opening" aria-labelledby="opening-title" hidden>
+    <div class="opening-inner">
+      <p class="opening-eyebrow">A little emergency</p>
+      <h1 id="opening-title" tabindex="-1">One percent. Now what?</h1>
+
+      <div id="opening-comic" class="opening-comic" role="group" aria-label="A short story: an old phone, a broken charger and one last idea">
+        <figure class="comic-panel">
+          <span class="panel-number" aria-hidden="true">01</span>
+          <p class="speech">Just one more minute…</p>
+          <div class="comic-drawing" aria-hidden="true">
+            <div class="pixel-phone story-phone"><div class="phone-screen"><span class="phone-meter"></span><span id="phone-percent">1%</span></div><i></i></div>
+            <span class="comic-sigh">…</span>
+          </div>
+          <figcaption>An old phone. Almost out of life.</figcaption>
+        </figure>
+        <figure class="comic-panel">
+          <span class="panel-number" aria-hidden="true">02</span>
+          <p class="speech">Of course. Today.</p>
+          <div class="comic-drawing" aria-hidden="true">
+            <div class="broken-cable"><i class="cable-plug"></i><i class="cable-left"></i><span>×</span><i class="cable-right"></i><i class="cable-end"></i></div>
+          </div>
+          <figcaption>Broken charger. No power bank.</figcaption>
+        </figure>
+        <figure class="comic-panel last-panel">
+          <span class="panel-number" aria-hidden="true">03</span>
+          <p id="last-speech" class="speech">Something in the drawer?</p>
+          <div class="comic-drawing drawer-scene" aria-hidden="true">
+            <div class="pixel-drawer"><i></i></div>
+            <span class="drawer-question">?</span>
+            <img class="rescue-battery" src="assets/flat-battery.png" alt="" width="32" height="32">
+            <img class="rescue-charger" src="assets/charger.png" alt="" width="32" height="32">
+            <img class="rescue-spark" src="assets/charging-bolt.png" alt="" width="32" height="32">
+          </div>
+          <figcaption>One removable battery. One last try.</figcaption>
+        </figure>
+      </div>
+
+      <h2 id="opening-question">What could give this battery another chance?</h2>
+      <p class="opening-context">The phone's battery can come out. Its usual charger has broken.</p>
+      <div class="opening-answers" role="group" aria-labelledby="opening-question">
+        <button class="answer" data-answer="bank" type="button">
+          <span class="answer-letter" aria-hidden="true">A</span>
+          <span class="answer-picture" aria-hidden="true"><span class="pixel-bank"><i></i></span></span>
+          <span class="answer-name">An empty power bank</span>
+        </button>
+        <button class="answer" data-answer="charger" type="button">
+          <span class="answer-letter" aria-hidden="true">B</span>
+          <span class="answer-picture" aria-hidden="true"><img src="assets/charger.png" alt="" width="32" height="32"></span>
+          <span class="answer-name">A universal charger</span>
+        </button>
+        <button class="answer" data-answer="cable" type="button">
+          <span class="answer-letter" aria-hidden="true">C</span>
+          <span class="answer-picture" aria-hidden="true"><span class="pixel-cable"><i></i><b></b></span></span>
+          <span class="answer-name">A USB cable on its own</span>
+        </button>
+        <button class="answer" data-answer="shake" type="button">
+          <span class="answer-letter" aria-hidden="true">D</span>
+          <span class="answer-picture" aria-hidden="true"><span class="pixel-phone mini-phone"><span class="phone-screen"></span><i></i></span><span class="shake-lines">))</span></span>
+          <span class="answer-name">A very hopeful shake</span>
+        </button>
+      </div>
+      <div id="opening-feedback" class="opening-feedback" role="status" aria-live="polite" aria-atomic="true">
+        <p id="opening-result"></p>
+        <p id="opening-explanation"></p>
+      </div>
+      <button id="skip-opening" class="opening-skip" type="button">Skip to the charger <span aria-hidden="true">→</span></button>
+    </div>
+  </section>
+
+  <div id="charger-page">
   <header>
-    <h1>Universal charger</h1>
+    <h1 id="charger-title" tabindex="-1">Universal charger</h1>
     <p>What keeps working when we stop looking?</p>
+    <button id="replay-opening" class="opening-replay small-button" type="button" hidden>Play the opening again <span aria-hidden="true">↺</span></button>
   </header>
 
   <main>
     <!-- LEFT: the object is built from the pixel layers in script.js. -->
     <section class="object-panel" aria-labelledby="object-title">
+      <div class="margin-doodles" aria-hidden="true"><span class="little-battery"><i></i></span><img src="assets/charging-bolt.png" alt="" width="32" height="32"></div>
       <h2 id="object-title">Look inside</h2>
       <p class="hint">Hover to look. Click a number to move its part.</p>
       <div class="object-stage">
@@ -111,5 +186,6 @@
   </main>
   <p id="asset-warning" class="warning" role="alert" hidden>An image did not load. You can still use the part buttons and read the facts.</p>
   <noscript><p class="warning">Enable JavaScript to move the parts and use the charging experiment.</p></noscript>
+  </div>
 </body>
 </html>
