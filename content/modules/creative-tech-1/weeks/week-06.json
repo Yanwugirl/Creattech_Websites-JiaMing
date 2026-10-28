@@ -1,13 +1,13 @@
 {
   "week": 6,
-  "title": "",
-  "date": "",
-  "introduction": "",
-  "related_work": "",
-  "method": "",
-  "results_discussion": "",
-  "conclusion_future_work": "",
+  "title": "Shared Circles and Rules for Connection",
+  "date": "2026-10-28",
+  "introduction": "Week 6 links a Node.js and Socket.io exercise with research into networked creative practice. The current Project 1 proposal concerns AI companionship and human connection. Its three-act narrative remains under discussion with Sam and Boyd.",
+  "related_work": "The reading notes distinguish sharing, remixing and synchronous authorship. Game Poems provides a reference for a small expressive form. LAUREN is relevant prior work for a human inside an automated role. Form+Code connects creative intentions to rules and parameters. Weber and Cook (2022), BST 7980, is a partial reading about embodied movement in XR; it is not the unconfirmed Gomez-Pena assignment.",
+  "method": "The Shared Circles server stores one list of circles. Browsers send click positions; the server adds or removes a circle and broadcasts the updated list. The implementation follows the supplied tutorial, with connection feedback and small input checks. A separate practice lab contains all 11 supplied p5 examples and five labelled exercise adaptations.",
+  "results_discussion": "A cloud development check passed real multi-client WebSocket synchronisation, topmost-circle deletion, late joining and reconnecting. This is a technical check on one development host. It does not establish a public Render deployment, a test on two physical computers, or completion of personal retyping. The proposed game has no participant results yet.",
+  "conclusion_future_work": "The next steps are to deploy the Node service on Render, test its returned public URL from two devices, and personally retype and change the core p5 examples. For the game, the central design questions concern who can change a reply, how that change becomes visible, and how both players retain agency. The exact Gomez-Pena reading still needs confirmation.",
   "images": [],
   "video": "",
-  "references": ""
+  "references": "Inspiration page: https://yanwugirl.github.io/Creattech_Websites-JiaMing/inspiration/project-1-week-6.html\nPractice lab: https://yanwugirl.github.io/Creattech_Websites-JiaMing/week-06-practice/\nSource: https://github.com/Yanwugirl/Project-1-Networked-Presence\nLoupe: https://loupeart.com/blogs/posts/crowdsourcing-creativity-collaborative-digital-art-platforms\nGame Poems: https://www.gamepoems.com/\nWeber and Cook (2022): https://doi.org/10.16995/bst.7980\nLauren McCarthy: https://get-lauren.net/LAUREN\nForm+Code: Casey Reas, Chandler McWilliams and LUST (2010), selected passages."
 }

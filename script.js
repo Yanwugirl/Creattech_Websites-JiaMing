@@ -76,6 +76,15 @@ function renderSubTabs(mod) {
     projectsBtn.addEventListener("click", () => switchSubTab(mod, "projects"));
     subTabsEl.appendChild(projectsBtn);
   }
+
+  if (mod.id === "creative-tech-1") {
+    const inspirationBtn = document.createElement("button");
+    inspirationBtn.textContent = "Inspiration";
+    inspirationBtn.addEventListener("click", () => {
+      window.location.href = "inspiration/project-1-week-6.html";
+    });
+    subTabsEl.appendChild(inspirationBtn);
+  }
 }
 
 async function switchSubTab(mod, tab) {
@@ -246,3 +255,4 @@ async function fetchJSON(path) {
   if (!res.ok) throw new Error(`Failed to fetch ${path}`);
   return res.json();
 }
+
