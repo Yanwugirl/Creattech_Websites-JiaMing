@@ -27,9 +27,10 @@ function run() {
   status.className = ''; status.textContent = 'Starting…';
   const safe = editor.value.replace(/<\/script/gi, '<\\/script');
   const prefix = '<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0}canvas{display:block}</style>'
-    + '<script>const report = message => parent.postMessage({type:"sketch-error",message:String(message)},"*");window.addEventListener("error", e => report(e.message));window.addEventListener("unhandledrejection", e => report(e.reason?.message || e.reason));<\/script>'
+    + '<script>window.__reportSketchError = message => parent.postMessage({type:"sketch-error",message:String(message)},"*");window.addEventListener("error", e => window.__reportSketchError(e.message));window.addEventListener("unhandledrejection", e => window.__reportSketchError(e.reason?.message || e.reason));<\/script>'
     + '<script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"><\/script></head><body>';
-  frame.srcdoc = prefix + '<script>' + safe + '<\/script></body></html>';
+  const guarded = '<script>(() => { for (const name of ["setup", "draw"]) { const learnerFunction = window[name]; if (typeof learnerFunction === "function") window[name] = function (...args) { try { return learnerFunction.apply(this, args); } catch (error) { window.__reportSketchError(error.message); throw error; } }; } })();<\/script>';
+  frame.srcdoc = prefix + '<script>' + safe + '<\/script>' + guarded + '</body></html>';
 }
 frame.addEventListener('load', () => {
   if (!status.classList.contains('error')) status.textContent = 'Loaded · move the mouse over the canvas';
